@@ -2,12 +2,10 @@ import ModernHeroSection from '@/components/ModernHeroSection'
 import ModernProgramCards from '@/components/ModernProgramCards'
 import InteractiveEventsTimeline from '@/components/InteractiveEventsTimeline'
 import ModernArtistsGallery from '@/components/ModernArtistsGallery'
-import AnimatedBackground from '@/components/AnimatedBackground'
 
 export default function Home() {
   return (
     <div className="min-h-screen relative">
-      <AnimatedBackground />
       <ModernHeroSection />
       
       <ModernProgramCards />

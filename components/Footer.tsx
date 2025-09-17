@@ -1,4 +1,4 @@
-import { Mail, MessageCircle, Facebook } from 'lucide-react'
+import { Mail, MessageCircle, Facebook, Accessibility, Eye, Type } from 'lucide-react'
 
 export default function Footer() {
   return (
@@ -72,6 +72,52 @@ export default function Footer() {
               {/* Location */}
               <p className="text-sm text-gray-400 mt-4">
                 Pueblo, Colorado
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Accessibility Section */}
+        <div className="border-t border-gray-800 pt-8 mb-8">
+          <div className="bg-gray-800/50 dark:bg-gray-950/50 rounded-lg p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <Accessibility className="w-6 h-6 text-sin-orange" />
+              <h3 className="text-lg font-semibold text-sin-orange">Our Commitment to Accessibility</h3>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <div className="flex items-start gap-3 mb-3">
+                  <Type className="w-5 h-5 text-sin-yellow mt-0.5 flex-shrink-0" />
+                  <div>
+                    <h4 className="text-white font-medium mb-1">OpenDyslexic Font Support</h4>
+                    <p className="text-gray-300 text-sm leading-relaxed">
+                      We proudly use OpenDyslexic, a typeface designed to increase readability for readers with dyslexia. 
+                      This font features weighted bottoms to help letters stay oriented and unique character shapes to reduce confusion.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <div className="flex items-start gap-3 mb-3">
+                  <Eye className="w-5 h-5 text-sin-yellow mt-0.5 flex-shrink-0" />
+                  <div>
+                    <h4 className="text-white font-medium mb-1">WCAG 2.1 AA Compliant</h4>
+                    <p className="text-gray-300 text-sm leading-relaxed">
+                      Our website follows Web Content Accessibility Guidelines (WCAG) 2.1 Level AA standards, ensuring 
+                      accessible color contrasts, keyboard navigation, screen reader compatibility, and clear content structure.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="mt-4 pt-4 border-t border-gray-700">
+              <p className="text-gray-300 text-sm">
+                <span className="font-medium text-white">Need assistance?</span> If you encounter any barriers or need content in an alternative format, 
+                please <a href="mailto:info@sunstonein.org" className="text-sin-orange hover:underline">contact us</a>. 
+                We're committed to making our resources accessible to everyone.
               </p>
             </div>
           </div>
