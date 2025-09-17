@@ -5,8 +5,8 @@ import Image from 'next/image'
 export default function ModernHeroSection() {
   return (
     <section className="relative w-full bg-gray-100 dark:bg-gray-900">
-      {/* Container that maintains 16:9 aspect ratio */}
-      <div className="relative w-full aspect-video" style={{ aspectRatio: '16 / 9' }}>
+      {/* Container - full viewport height on mobile, 16:9 aspect ratio on desktop */}
+      <div className="relative w-full h-[85vh] sm:h-auto sm:aspect-video">
         {/* Desktop Light mode image */}
         <Image
           src="/assets/images/banner/daymode.webp"
@@ -34,7 +34,7 @@ export default function ModernHeroSection() {
           src="/assets/images/banner/daymode-mobile.webp"
           alt="Sunstone Inclusivity Network"
           fill
-          className="object-contain dark:hidden animate-fade-in block sm:hidden"
+          className="object-cover dark:hidden animate-fade-in block sm:hidden"
           priority
           quality={100}
           sizes="100vw"
@@ -45,7 +45,7 @@ export default function ModernHeroSection() {
           src="/assets/images/banner/nightmode-mobile.webp"
           alt="Sunstone Inclusivity Network"
           fill
-          className="object-contain hidden dark:block animate-fade-in sm:hidden"
+          className="object-cover hidden dark:block animate-fade-in sm:hidden"
           priority
           quality={100}
           sizes="100vw"
