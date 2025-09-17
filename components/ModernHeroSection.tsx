@@ -7,23 +7,45 @@ export default function ModernHeroSection() {
     <section className="relative w-full bg-gray-100 dark:bg-gray-900">
       {/* Container that maintains 16:9 aspect ratio */}
       <div className="relative w-full aspect-video" style={{ aspectRatio: '16 / 9' }}>
-        {/* Light mode image */}
+        {/* Desktop Light mode image */}
         <Image
           src="/assets/images/banner/daymode.webp"
           alt="Sunstone Inclusivity Network"
           fill
-          className="object-contain dark:hidden animate-fade-in"
+          className="object-contain dark:hidden animate-fade-in hidden sm:block"
           priority
           quality={100}
           sizes="100vw"
         />
         
-        {/* Dark mode image */}
+        {/* Desktop Dark mode image */}
         <Image
           src="/assets/images/banner/nightmode.webp"
           alt="Sunstone Inclusivity Network"
           fill
-          className="object-contain hidden dark:block animate-fade-in"
+          className="object-contain hidden dark:sm:block animate-fade-in"
+          priority
+          quality={100}
+          sizes="100vw"
+        />
+        
+        {/* Mobile Light mode image */}
+        <Image
+          src="/assets/images/banner/daymode-mobile.webp"
+          alt="Sunstone Inclusivity Network"
+          fill
+          className="object-contain dark:hidden animate-fade-in block sm:hidden"
+          priority
+          quality={100}
+          sizes="100vw"
+        />
+        
+        {/* Mobile Dark mode image */}
+        <Image
+          src="/assets/images/banner/nightmode-mobile.webp"
+          alt="Sunstone Inclusivity Network"
+          fill
+          className="object-contain hidden dark:block animate-fade-in sm:hidden"
           priority
           quality={100}
           sizes="100vw"
