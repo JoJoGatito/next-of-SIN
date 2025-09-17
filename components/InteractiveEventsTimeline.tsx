@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { PartyPopper, BookOpen, Utensils, HeartHandshake, Calendar, Clock, MapPin } from 'lucide-react'
+import { Calendar, Clock, MapPin } from 'lucide-react'
 
 const events = [
   {
@@ -11,8 +11,7 @@ const events = [
     time: "6:00 PM",
     location: "Community Center",
     program: "Sunstone Youth Group",
-    type: "celebration",
-    color: "from-pink-400 to-purple-600",
+    color: "from-sin-orange to-sin-yellow",
     attendees: 150
   },
   {
@@ -22,8 +21,7 @@ const events = [
     time: "2:00 PM",
     location: "Virtual + In-Person",
     program: "Dis'abitch",
-    type: "workshop",
-    color: "from-blue-400 to-indigo-600",
+    color: "from-sin-orange to-sin-red",
     attendees: 75
   },
   {
@@ -33,8 +31,7 @@ const events = [
     time: "5:30 PM",
     location: "Hue House",
     program: "Cafeteria Collective",
-    type: "gathering",
-    color: "from-green-400 to-teal-600",
+    color: "from-sin-yellow to-sin-orange",
     attendees: 100
   },
   {
@@ -44,26 +41,16 @@ const events = [
     time: "7:00 PM",
     location: "Rock & Stone Center",
     program: "Rock & Stone",
-    type: "support",
-    color: "from-yellow-400 to-orange-600",
+    color: "from-sin-red to-sin-orange",
     attendees: 30
   }
 ]
 
-const typeIcons = {
-  celebration: PartyPopper,
-  workshop: BookOpen,
-  gathering: Utensils,
-  support: HeartHandshake
-}
-
 export default function InteractiveEventsTimeline() {
   const [selectedEvent, setSelectedEvent] = useState<number | null>(null)
-  const [filter, setFilter] = useState<string>('all')
 
-  const filteredEvents = filter === 'all' 
-    ? events 
-    : events.filter(e => e.type === filter)
+  // Show only the first 4 events
+  const upcomingEvents = events.slice(0, 4)
 
   return (
     <section className="py-16 px-4 md:px-8 lg:px-16 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900">
@@ -72,39 +59,9 @@ export default function InteractiveEventsTimeline() {
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             Upcoming <span className="gradient-text">Events</span>
           </h2>
-          <p className="text-muted-foreground text-lg mb-8">
+          <p className="text-muted-foreground text-lg">
             Join us for community, learning, and celebration
           </p>
-          
-          {/* Filter buttons */}
-          <div className="flex flex-wrap justify-center gap-2 mb-8">
-            <button
-              onClick={() => setFilter('all')}
-              className={`px-4 py-2 rounded-full transition-all duration-300 ${
-                filter === 'all' 
-                  ? 'bg-gradient-to-r from-sin-orange to-sin-yellow text-white shadow-lg' 
-                  : 'bg-card text-muted-foreground hover:shadow-md border border-border'
-              }`}
-            >
-              All Events
-            </button>
-            {Object.keys(typeIcons).map(type => (
-              <button
-                key={type}
-                onClick={() => setFilter(type)}
-                className={`px-4 py-2 rounded-full transition-all duration-300 ${
-                  filter === type 
-                    ? 'bg-gradient-to-r from-sin-orange to-sin-yellow text-white shadow-lg' 
-                    : 'bg-card text-muted-foreground hover:shadow-md border border-border'
-                }`}
-              >
-                {(() => {
-                  const Icon = typeIcons[type as keyof typeof typeIcons]
-                  return <><Icon className="inline w-4 h-4 mr-1" /> {type.charAt(0).toUpperCase() + type.slice(1)}</>
-                })()}
-              </button>
-            ))}
-          </div>
         </div>
 
         {/* Timeline */}
@@ -112,7 +69,7 @@ export default function InteractiveEventsTimeline() {
           {/* Vertical line driven by CSS variable for perfect alignment */}
           <div className="absolute top-0 bottom-0 w-0.5 bg-gradient-to-b from-sin-orange via-sin-yellow to-sin-red timeline-line" />
           
-          {filteredEvents.map((event, index) => (
+          {upcomingEvents.map((event, index) => (
             <div
               key={event.id}
               className={`relative timeline-item mb-8 md:mb-12 ${
@@ -135,14 +92,8 @@ export default function InteractiveEventsTimeline() {
                   <div className="relative backdrop-blur-xl bg-white/20 dark:bg-black/20 p-6">
                     <div className="flex items-start justify-between mb-3">
                       <div>
-                        <span className="text-sin-orange">
-                          {(() => {
-                            const Icon = typeIcons[event.type as keyof typeof typeIcons]
-                            return <Icon className="w-8 h-8" />
-                          })()}
-                        </span>
-                        <h3 className="text-xl font-bold text-white mt-2">{event.title}</h3>
-                        <p className="text-white/80 text-sm">{event.program}</p>
+                        <h3 className="text-xl font-bold text-white">{event.title}</h3>
+                        <p className="text-white/80 text-sm mt-1">{event.program}</p>
                       </div>
                       <span className="bg-white/20 backdrop-blur px-3 py-1 rounded-full text-white text-sm">
                         {event.attendees} attending

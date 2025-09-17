@@ -9,8 +9,8 @@ export default function HeroSection() {
           Building bridges of support and celebration for queer, disabled, and BIPOC communities
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up">
-          <a href="/programs" className="btn-primary inline-block">
-            Explore Our Programs
+          <a href="/about" className="btn-primary inline-block">
+            Learn About Us
           </a>
           <a href="/events" className="btn-secondary inline-block bg-white text-sin-orange hover:bg-gray-100">
             Upcoming Events

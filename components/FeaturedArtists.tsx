@@ -34,10 +34,9 @@ export default function FeaturedArtists() {
             {artist.bio}
           </p>
           <a 
-            href={`/artists/${artist.id}`} 
-            className="mt-4 inline-block text-sin-orange font-semibold hover:underline"
-          >
-            View Portfolio →
+            href="/local#artists" 
+            className="mt-4 inline-block text-sin-orange font-semibold hover:underline">
+            View More →
           </a>
         </div>
       ))}

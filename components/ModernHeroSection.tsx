@@ -116,16 +116,6 @@ export default function ModernHeroSection() {
             <span className="font-bold text-sin-yellow"> disabled</span>, and
             <span className="font-bold text-sin-yellow"> BIPOC</span> communities
           </p>
-
-          {/* Call to action buttons - visible immediately */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-8 py-4 bg-white text-sin-orange font-bold text-lg rounded-lg hover:bg-white/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
-              Get Involved
-            </button>
-            <button className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold text-lg rounded-lg hover:bg-white/10 backdrop-blur-sm transition-all duration-300">
-              Learn More
-            </button>
-          </div>
         </div>
         
         {/* Animated scroll indicator - only show after enhancement and on desktop */}

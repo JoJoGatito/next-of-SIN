@@ -17,20 +17,20 @@ export default function Footer() {
           <div>
             <h4 className="text-sin-orange font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm">
+              <li><a href="/" className="text-gray-300 hover:text-sin-orange transition-colors">Home</a></li>
               <li><a href="/about" className="text-gray-300 hover:text-sin-orange transition-colors">About Us</a></li>
-              <li><a href="/programs" className="text-gray-300 hover:text-sin-orange transition-colors">Programs</a></li>
               <li><a href="/events" className="text-gray-300 hover:text-sin-orange transition-colors">Events</a></li>
-              <li><a href="/resources" className="text-gray-300 hover:text-sin-orange transition-colors">Resources</a></li>
+              <li><a href="/local" className="text-gray-300 hover:text-sin-orange transition-colors">Local Community</a></li>
             </ul>
           </div>
 
-          {/* Get Involved */}
+          {/* Support Us */}
           <div>
-            <h4 className="text-sin-orange font-semibold mb-4">Get Involved</h4>
+            <h4 className="text-sin-orange font-semibold mb-4">Support Us</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="/volunteer" className="text-gray-300 hover:text-sin-orange transition-colors">Volunteer</a></li>
               <li><a href="/donate" className="text-gray-300 hover:text-sin-orange transition-colors">Donate</a></li>
-              <li><a href="/contact" className="text-gray-300 hover:text-sin-orange transition-colors">Contact</a></li>
+              <li><a href="/local#resources" className="text-gray-300 hover:text-sin-orange transition-colors">Resources</a></li>
+              <li><a href="/local#artists" className="text-gray-300 hover:text-sin-orange transition-colors">Featured Artists</a></li>
             </ul>
           </div>
 
@@ -112,16 +112,8 @@ export default function Footer() {
                 <Mail className="w-5 h-5" />
               </a>
             </div>
-            <div className="flex space-x-6">
-              <a href="/privacy" className="text-gray-300 hover:text-sin-orange text-sm transition-colors">
-                Privacy Policy
-              </a>
-              <a href="/terms" className="text-gray-300 hover:text-sin-orange text-sm transition-colors">
-                Terms of Service
-              </a>
-              <a href="/accessibility" className="text-gray-300 hover:text-sin-orange text-sm transition-colors">
-                Accessibility
-              </a>
+            <div className="text-gray-300 text-sm">
+              A 501(c)(3) Nonprofit Organization
             </div>
           </div>
         </div>

@@ -40,11 +40,9 @@ export default function ProgramCards() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {programs.map((program) => (
-        <a
+        <div
           key={program.id}
-          href={`/programs/${program.slug}`}
-          className="card hover:shadow-xl transition-shadow duration-300 group"
-        >
+          className="card hover:shadow-xl transition-shadow duration-300 group">
           <div className={`h-2 ${program.color} mb-4 rounded-full`}></div>
           <h3 className="text-xl font-bold mb-3 group-hover:text-sin-orange transition-colors">
             {program.title}
@@ -52,10 +50,12 @@ export default function ProgramCards() {
           <p className="text-gray-600 dark:text-gray-400">
             {program.description}
           </p>
-          <div className="mt-4 text-sin-orange font-semibold group-hover:translate-x-2 transition-transform inline-block">
+          <a 
+            href="/about#programs"
+            className="mt-4 text-sin-orange font-semibold group-hover:translate-x-2 transition-transform inline-block">
             Learn More →
-          </div>
-        </a>
+          </a>
+        </div>
       ))}
     </div>
   )
