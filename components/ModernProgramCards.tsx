@@ -17,7 +17,7 @@ const programs = [
     id: 2,
     title: "Rock & Stone",
     slug: "rock-and-stone",
-    description: "Building resilience and community through peer support and empowerment programs.",
+    description: "Inclusive outdoor and nature group that welcomes everyone who wants to explore and connect with the natural world. We organize various outdoor activities that cater to all skill levels and abilities.",
     color: "from-yellow-400 to-amber-600",
     icon: Heart,
     meetingFrequency: null
@@ -26,7 +26,7 @@ const programs = [
     id: 3,
     title: "Dis'abitch",
     slug: "disabitch",
-    description: "Celebrating and supporting the disabled community with pride, resources, and advocacy.",
+    description: "A community that celebrates disability culture, advocates for accessibility, and creates spaces where disabled individuals can connect, share experiences, and build solidarity.",
     color: "from-red-400 to-red-600",
     icon: Accessibility,
     meetingFrequency: null
@@ -35,7 +35,7 @@ const programs = [
     id: 4,
     title: "Cafeteria Collective",
     slug: "cafeteria-collective",
-    description: "Nourishing community through food justice, shared meals, and collective care.",
+    description: "Queer meet and greet where we can share stories, food, connections, and build community.",
     color: "from-green-400 to-green-600",
     icon: Utensils,
     meetingFrequency: null
@@ -44,7 +44,7 @@ const programs = [
     id: 5,
     title: "Hue House",
     slug: "hue-house",
-    description: "A vibrant space celebrating BIPOC artists, culture, and creative expression.",
+    description: "A community of BIPOC focused discussions, meet & greets, and local events that celebrate the diversity of the queer community and it's allies.",
     color: "from-purple-400 to-purple-600",
     icon: Palette,
     meetingFrequency: "Monthly meetings"
