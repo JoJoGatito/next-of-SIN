@@ -12,7 +12,7 @@ export default function ModernHeroSection() {
           src="/assets/images/banner/daymode.webp"
           alt="Sunstone Inclusivity Network"
           fill
-          className="object-contain dark:hidden animate-fade-in hidden sm:block"
+          className="object-contain hidden sm:block dark:sm:hidden animate-fade-in"
           priority
           quality={100}
           sizes="100vw"
@@ -34,7 +34,7 @@ export default function ModernHeroSection() {
           src="/assets/images/banner/daymode-mobile.webp"
           alt="Sunstone Inclusivity Network"
           fill
-          className="object-cover dark:hidden animate-fade-in block sm:hidden"
+          className="object-cover block sm:hidden dark:hidden animate-fade-in"
           priority
           quality={100}
           sizes="100vw"
@@ -45,7 +45,7 @@ export default function ModernHeroSection() {
           src="/assets/images/banner/nightmode-mobile.webp"
           alt="Sunstone Inclusivity Network"
           fill
-          className="object-cover hidden dark:block animate-fade-in sm:hidden"
+          className="object-cover hidden dark:block dark:sm:hidden animate-fade-in"
           priority
           quality={100}
           sizes="100vw"
