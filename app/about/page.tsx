@@ -1,29 +1,28 @@
 import Image from 'next/image'
 import { Users, Heart, Target, Sparkles } from 'lucide-react'
 
-// Board members data - you can update these with actual information
+// Board members data
 const boardMembers = [
   {
     id: 1,
     name: "JoJo",
-    title: "Board Chair",
-    image: "/images/board/jojo.jpg", // Update with actual image path
+    title: "Board Chair & Founder",
+    image: "/assets/images/board/JoJo.webp",
     bio: "Visionary leader and community builder with a passion for inclusive technology. Guiding our organization's strategic direction and growth."
   },
-  // Add more board members here as needed
   {
     id: 2,
-    name: "Board Member Name",
-    title: "Title",
-    image: "/images/board/member2.jpg",
-    bio: "Bio text here..."
+    name: "Ben",
+    title: "Board Member",
+    image: "/assets/images/board/Ben.webp",
+    bio: "Dedicated advocate for social justice and accessibility. Working to ensure all community members have equal opportunities to thrive."
   },
   {
     id: 3,
-    name: "Board Member Name",
-    title: "Title",
-    image: "/images/board/member3.jpg",
-    bio: "Bio text here..."
+    name: "Board Member",
+    title: "Coming Soon",
+    image: null,
+    bio: "We're looking for passionate community leaders to join our board and help shape the future of inclusivity in Southern Colorado."
   },
 ]
 
@@ -175,7 +174,7 @@ export default function AboutPage() {
                   {/* Sun head background */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <Image
-                      src="/assets/images/sun-head.webp"
+                      src="/assets/images/board/sun-head.webp"
                       alt=""
                       width={300}
                       height={300}
@@ -184,19 +183,19 @@ export default function AboutPage() {
                   </div>
                   
                   {/* Member photo */}
-                  <div className="relative z-10 mx-auto w-48 h-48 rounded-full overflow-hidden border-4 border-sin-yellow/50">
-                    {/* Replace with actual member photos */}
-                    <div className="w-full h-full bg-gradient-to-br from-sin-orange/50 to-sin-red/50 flex items-center justify-center">
-                      <Users className="w-24 h-24 text-white/50" />
-                    </div>
-                    {/* Uncomment when you have actual images
-                    <Image
-                      src={member.image}
-                      alt={member.name}
-                      fill
-                      className="object-cover"
-                    />
-                    */}
+                  <div className="relative z-10 mx-auto w-48 h-48 rounded-full overflow-hidden">
+                    {member.image ? (
+                      <Image
+                        src={member.image}
+                        alt={member.name}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-sin-orange/50 to-sin-red/50 flex items-center justify-center">
+                        <Users className="w-24 h-24 text-white/50" />
+                      </div>
+                    )}
                   </div>
                 </div>
 

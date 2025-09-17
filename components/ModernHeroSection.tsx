@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { ChevronDown } from 'lucide-react'
+import Image from 'next/image'
 
 export default function ModernHeroSection() {
   const [isEnhanced, setIsEnhanced] = useState(false)
@@ -54,12 +55,15 @@ export default function ModernHeroSection() {
 
   return (
     <section className="relative min-h-[85vh] md:min-h-[90vh] lg:min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Static gradient background - always visible */}
+      {/* Animated gradient background - always visible */}
       <div 
-        className="absolute inset-0 bg-gradient-to-br from-sin-orange via-sin-yellow to-sin-red opacity-90 transition-transform duration-700 ease-out"
+        className="absolute inset-0 opacity-95 transition-transform duration-700 ease-out"
         style={{
+          background: 'linear-gradient(-45deg, #000000, #450a0a, #991b1b, #000000, #7f1d1d, #450a0a)',
+          backgroundSize: '400% 400%',
+          animation: 'gradientShift 15s ease infinite',
           transform: isEnhanced && !isMobile ? `translateY(${scrollY * 0.5}px)` : 'none',
-          willChange: isEnhanced ? 'transform' : 'auto'
+          willChange: isEnhanced ? 'transform, background-position' : 'auto'
         }}
       />
       
@@ -83,27 +87,42 @@ export default function ModernHeroSection() {
         </div>
       )}
 
+      {/* Banner and Title Background */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center overflow-hidden">
+        {/* Title Text */}
+        <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 ${isEnhanced ? 'animate-slide-in-left' : ''}`}>
+          <span className="text-white" style={{ textShadow: '3px 3px 6px rgba(0,0,0,0.7), 0 0 30px rgba(0,0,0,0.5)' }}>
+            Sunstone Inclusivity Network
+          </span>
+        </h1>
+        
+        {/* Banner */}
+        <Image
+          src="/assets/images/banner/sinbanner.webp"
+          alt="Sunstone Inclusivity Network"
+          width={1200}
+          height={400}
+          className={`object-contain w-full h-auto max-w-5xl opacity-90 ${isEnhanced ? 'animate-fade-in' : ''}`}
+          priority
+        />
+      </div>
+
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 text-center">
-        <div className={`${isEnhanced ? 'backdrop-blur-xl' : 'backdrop-blur-md'} bg-gradient-to-br from-black/20 to-black/40 dark:from-black/30 dark:to-black/50 p-6 sm:p-8 md:p-12 rounded-2xl md:rounded-3xl ${isEnhanced ? 'animate-bounce-in' : ''} border border-white/30 shadow-2xl mx-4 sm:mx-0 transition-all duration-500`}>
-          <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 ${isEnhanced ? 'animate-slide-in-left' : ''}`}>
-            <span className="block text-white" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.5), 0 0 20px rgba(0,0,0,0.3)' }}>Sunstone</span>
-            <span className="block text-white text-2xl sm:text-3xl md:text-4xl lg:text-6xl mt-2" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.5), 0 0 20px rgba(0,0,0,0.3)' }}>Inclusivity Network</span>
-          </h1>
-          
-          <p className={`text-base sm:text-lg md:text-xl lg:text-2xl mb-8 md:mb-12 text-white max-w-3xl mx-auto ${isEnhanced ? 'animate-slide-in-right' : ''} px-4 sm:px-0`} style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.5)' }}>
+        <div className="mt-64 md:mt-72 lg:mt-80">
+          <p className={`text-lg sm:text-xl md:text-2xl lg:text-3xl mb-8 md:mb-12 text-white max-w-3xl mx-auto ${isEnhanced ? 'animate-slide-in-right' : ''} px-4 sm:px-0 font-semibold`} style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.5)' }}>
             Building bridges of support and celebration for 
-            <span className="font-bold"> queer</span>,
-            <span className="font-bold"> disabled</span>, and
-            <span className="font-bold"> BIPOC</span> communities
+            <span className="font-bold text-sin-yellow"> queer</span>,
+            <span className="font-bold text-sin-yellow"> disabled</span>, and
+            <span className="font-bold text-sin-yellow"> BIPOC</span> communities
           </p>
 
           {/* Call to action buttons - visible immediately */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8">
-            <button className="px-6 py-3 bg-white text-sin-orange font-semibold rounded-lg hover:bg-white/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button className="px-8 py-4 bg-white text-sin-orange font-bold text-lg rounded-lg hover:bg-white/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
               Get Involved
             </button>
-            <button className="px-6 py-3 bg-transparent border-2 border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-all duration-300">
+            <button className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold text-lg rounded-lg hover:bg-white/10 backdrop-blur-sm transition-all duration-300">
               Learn More
             </button>
           </div>
