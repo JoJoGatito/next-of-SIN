@@ -1,0 +1,211 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* OpenDyslexic Font Faces */
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('/fonts/OpenDyslexic3-Regular.woff2') format('woff2'),
+       url('/fonts/OpenDyslexic3-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('/fonts/OpenDyslexic3-Bold.woff2') format('woff2'),
+       url('/fonts/OpenDyslexic3-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --background: 255 255 255;
+    --foreground: 0 0 0;
+    --card: 255 255 255;
+    --card-foreground: 0 0 0;
+    --muted: 245 245 245;
+    --muted-foreground: 100 100 100;
+    --sin-orange: 255 138 0;
+    --sin-yellow: 255 214 0;
+    --sin-red: 255 61 0;
+    --border: 230 230 230;
+  }
+
+  .dark {
+    --background: 15 15 15;
+    --foreground: 240 240 240;
+    --card: 30 30 30;
+    --card-foreground: 240 240 240;
+    --muted: 40 40 40;
+    --muted-foreground: 160 160 160;
+    --border: 60 60 60;
+  }
+
+  html {
+    @apply text-base;
+  }
+
+  body {
+    @apply bg-background text-foreground tracking-body;
+    font-size: 1.125rem; /* 18px base for better dyslexia accommodation */
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-heading;
+  }
+
+  /* Accessibility: Focus styles */
+  *:focus {
+    @apply outline-none;
+  }
+
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-sin-orange;
+  }
+
+  /* Skip to content link */
+  .skip-to-content {
+    @apply absolute left-[-9999px] z-50 bg-sin-orange text-white px-4 py-2 rounded-md;
+  }
+
+  .skip-to-content:focus {
+    @apply left-4 top-4;
+  }
+
+  /* Reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Mobile touch improvements */
+  @media (max-width: 768px) {
+    button, a {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    
+    /* Ensure minimum touch target size */
+    button {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    
+    /* Smooth scrolling on mobile */
+    html {
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+}
+
+@layer components {
+  /* Smoother rainbow bar with larger gradient canvas and soft overlay to reduce banding */
+  .rainbow-bar {
+    background-size: 300% 100%;
+    background-repeat: no-repeat;
+    animation: rainbow-scroll 12s linear infinite;
+    filter: blur(0.3px);
+    position: relative;
+    will-change: background-position;
+  }
+  .rainbow-bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to right, rgba(255,255,255,0.06), rgba(255,255,255,0), rgba(0,0,0,0.04));
+    mix-blend-mode: soft-light;
+  }
+  .btn-primary {
+    @apply bg-sin-orange text-white px-6 py-3 rounded-lg font-semibold 
+           hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105
+           focus:outline-none focus:ring-2 focus:ring-sin-orange focus:ring-offset-2
+           disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl;
+  }
+
+  .btn-secondary {
+    @apply bg-transparent text-sin-orange border-2 border-sin-orange px-6 py-3 rounded-lg font-semibold
+           hover:bg-sin-orange hover:text-white transition-all duration-200 transform hover:scale-105
+           focus:outline-none focus:ring-2 focus:ring-sin-orange focus:ring-offset-2
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .card {
+    @apply bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6
+           border border-gray-200 dark:border-gray-700 transition-all duration-300;
+  }
+
+  .card-glass {
+    @apply backdrop-blur-md bg-white/70 dark:bg-gray-900/70 rounded-2xl shadow-xl p-6
+           border border-white/20 dark:border-gray-700/20 transition-all duration-300;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-sin-orange via-sin-yellow to-sin-red bg-clip-text text-transparent;
+  }
+
+  .rainbow-border {
+    @apply relative;
+  }
+
+  .rainbow-border::before {
+    content: '';
+    @apply absolute inset-0 rounded-lg p-[2px] -z-10;
+    background: linear-gradient(
+      45deg,
+      #ff0000, 
+      #ff7300, 
+      #fffb00, 
+      #48ff00, 
+      #00ffd5, 
+      #002bff, 
+      #7a00ff, 
+      #ff00c8, 
+      #ff0000
+    );
+    background-size: 400% 400%;
+    animation: rainbow-scroll 10s linear infinite;
+  }
+
+  .glow-effect {
+    @apply relative;
+  }
+
+  .glow-effect::before {
+    content: '';
+    @apply absolute -inset-1 bg-gradient-to-r from-sin-orange to-sin-yellow rounded-lg blur opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200;
+  }
+
+  .shimmer {
+    @apply relative overflow-hidden;
+  }
+
+  .shimmer::before {
+    content: '';
+    @apply absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent blur-sm;
+    background-size: 400% 100%;
+    animation: shimmer 5s infinite linear;
+  }
+}
+
+@keyframes rainbow-scroll {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
