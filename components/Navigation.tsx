@@ -17,19 +17,17 @@ export default function Navigation() {
   const pathname = usePathname()
   const router = useRouter()
   const { theme, setTheme, isReady } = useTheme()
+  
+  // Theme state changes are handled by useEffect
+  useEffect(() => {
+  }, [theme, isReady])
   const sliderRef = useRef<HTMLDivElement>(null)
   const navRef = useRef<HTMLDivElement>(null)
   const startX = useRef(0)
   const currentX = useRef(0)
   const lastScrollY = useRef(0)
 
-  const toggleTheme = (e?: React.MouseEvent | React.TouchEvent) => {
-    // Prevent event bubbling to avoid conflicts with touch handlers
-    if (e) {
-      e.preventDefault()
-      e.stopPropagation()
-    }
-    
+  const toggleTheme = () => {
     // Only toggle if the theme provider is ready
     if (!isReady) return
     
@@ -148,7 +146,6 @@ export default function Navigation() {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              onTouchEnd={toggleTheme}
               className="theme-toggle p-3 rounded-full transition-all duration-300"
               aria-label="Toggle theme"
               style={{ touchAction: 'manipulation' }}
@@ -169,12 +166,19 @@ export default function Navigation() {
             ref={sliderRef}
             className="mobile-nav-slider-container"
             onTouchStart={(e) => {
+              // Don't check isReady here - allow touch events regardless of theme state
+              e.stopPropagation() // Prevent event from being captured by parent elements
               setIsDragging(true)
               startX.current = e.touches[0].clientX
               currentX.current = sliderPosition
             }}
             onTouchMove={(e) => {
-              if (!isDragging || !sliderRef.current) return
+              // Only check if we're dragging and have a valid ref, not theme readiness
+              if (!isDragging || !sliderRef.current) {
+                return
+              }
+              
+              e.stopPropagation()
               
               const diff = e.touches[0].clientX - startX.current
               const containerWidth = sliderRef.current.offsetWidth
@@ -185,14 +189,19 @@ export default function Navigation() {
               const clampedPosition = Math.max(0, Math.min(navLinks.length - 1, newPosition))
               setSliderPosition(clampedPosition)
             }}
-            onTouchEnd={() => {
-              if (!isDragging) return
+            onTouchEnd={(e) => {
+              // Only check if we're dragging, not theme readiness
+              if (!isDragging) {
+                return
+              }
+
+              e.stopPropagation()
               setIsDragging(false)
-              
+
               // Snap to nearest position
               const nearestIndex = Math.round(sliderPosition)
               setSliderPosition(nearestIndex)
-              
+
               // Navigate to the page
               router.push(navLinks[nearestIndex].href)
             }}
@@ -218,7 +227,8 @@ export default function Navigation() {
                 return (
                   <button
                     key={link.href}
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation()
                       setSliderPosition(index)
                       router.push(link.href)
                     }}
@@ -240,15 +250,8 @@ export default function Navigation() {
           
           {/* Theme Toggle - Separate from slider */}
           <button
-            onClick={toggleTheme}
-            onTouchStart={(e) => {
-              // Prevent touch events from interfering with slider
-              e.stopPropagation()
-            }}
-            onTouchEnd={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              toggleTheme(e)
+            onClick={(e) => {
+              toggleTheme()
             }}
             className="mobile-theme-toggle flex items-center justify-center"
             aria-label="Toggle theme"
