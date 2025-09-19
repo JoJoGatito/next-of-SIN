@@ -58,6 +58,21 @@
     @apply tracking-heading;
   }
 
+  /* Ensure large text doesn't get truncated */
+  .text-4xl, .text-5xl {
+    line-height: 1.4 !important;
+    overflow: visible;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  /* Specific heading improvements for titles */
+  h1.text-4xl, h1.text-5xl {
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.4 !important;
+  }
+
   /* Accessibility: Focus styles */
   *:focus {
     @apply outline-none;
@@ -152,7 +167,9 @@
   }
 
   .gradient-text {
-    @apply bg-gradient-to-r from-sin-orange via-sin-yellow to-sin-red bg-clip-text text-transparent;
+    @apply text-brand-dark-red dark:text-sin-yellow;
+    display: block;
+    overflow: visible;
   }
 
   .rainbow-border {

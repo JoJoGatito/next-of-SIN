@@ -14,6 +14,7 @@ const config: Config = {
         'sin-orange': '#FF8A00',
         'sin-yellow': '#FFD600',
         'sin-red': '#FF3D00',
+        'brand-dark-red': '#A91101',
         
         // Theme colors
         background: 'rgb(var(--background) / <alpha-value>)',
@@ -39,8 +40,9 @@ const config: Config = {
         'lg': ['1.25rem', { lineHeight: '1.6' }],
         'xl': ['1.563rem', { lineHeight: '1.3' }],
         '2xl': ['1.953rem', { lineHeight: '1.3' }],
-        '3xl': ['2.441rem', { lineHeight: '1.3' }],
-        '4xl': ['3.052rem', { lineHeight: '1.3' }],
+        '3xl': ['2.441rem', { lineHeight: '1.4' }],
+        '4xl': ['3.052rem', { lineHeight: '1.4' }],
+        '5xl': ['3.815rem', { lineHeight: '1.4' }],
       },
       letterSpacing: {
         'body': '0.01em',
