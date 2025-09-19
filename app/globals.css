@@ -222,6 +222,43 @@
     @apply shadow-lg;
     transform: scale(0.95);
   }
+  
+  /* Navigation collapsed state - just the logo */
+  .floating-nav.nav-collapsed {
+    @apply shadow-xl;
+    min-width: auto;
+    width: auto;
+  }
+  
+  /* Logo in collapsed state - add hover hint */
+  .nav-logo-collapsed {
+    @apply shadow-lg;
+    animation: pulse-glow 2s infinite;
+  }
+  
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(255, 138, 0, 0.4);
+    }
+    50% {
+      box-shadow: 0 0 0 8px rgba(255, 138, 0, 0);
+    }
+  }
+  
+  /* Smooth transition for collapsible content */
+  .nav-collapsible-content {
+    will-change: max-width, opacity;
+    white-space: nowrap;
+  }
+  
+  /* Prevent layout shifts during animation */
+  .floating-nav {
+    min-height: 56px;
+  }
+  
+  .floating-nav.nav-collapsed {
+    min-height: auto;
+  }
 
   /* Navigation Link Styles */
   .nav-link {
@@ -263,15 +300,30 @@
     @apply bg-sin-orange/10 dark:bg-sin-yellow/10;
     transform: rotate(360deg) scale(1.1);
   }
+  
+  /* Logo when collapsed - enhance hover affordance */
+  .nav-logo-collapsed:hover {
+    @apply bg-sin-orange/20 dark:bg-sin-yellow/20;
+    transform: scale(1.15);
+    animation: none;
+  }
 
   /* Theme Toggle Animation */
   .theme-toggle {
     @apply bg-gray-100/50 dark:bg-gray-800/50;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
   .theme-toggle:hover {
     @apply bg-sin-orange/10 dark:bg-sin-yellow/10;
     transform: scale(1.1);
+  }
+
+  .theme-toggle:active {
+    @apply bg-sin-orange/20 dark:bg-sin-yellow/20;
+    transform: scale(0.95);
   }
 
   /* Mobile Bottom Navigation - Glassmorphic with Slider */
@@ -426,6 +478,23 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: pointer;
+    /* Improve touch target for better tap reliability */
+    position: relative;
+  }
+
+  .mobile-theme-toggle::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 1rem;
+    /* Invisible larger tap target */
   }
 
   .mobile-theme-toggle:hover {
@@ -434,6 +503,7 @@
   }
 
   .mobile-theme-toggle:active {
+    @apply bg-sin-orange/20 dark:bg-sin-yellow/20;
     transform: scale(0.95);
   }
 

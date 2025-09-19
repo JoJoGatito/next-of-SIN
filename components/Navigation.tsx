@@ -9,18 +9,32 @@ import { Sun, Moon, Home, Users, Heart, Calendar, MapPin } from 'lucide-react'
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
   const [activeLink, setActiveLink] = useState('')
   const [sliderPosition, setSliderPosition] = useState(0)
   const [isDragging, setIsDragging] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme, isReady } = useTheme()
   const sliderRef = useRef<HTMLDivElement>(null)
+  const navRef = useRef<HTMLDivElement>(null)
   const startX = useRef(0)
   const currentX = useRef(0)
+  const lastScrollY = useRef(0)
 
-  const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark')
+  const toggleTheme = (e?: React.MouseEvent | React.TouchEvent) => {
+    // Prevent event bubbling to avoid conflicts with touch handlers
+    if (e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+    
+    // Only toggle if the theme provider is ready
+    if (!isReady) return
+    
+    const newTheme = theme === 'dark' ? 'light' : 'dark'
+    setTheme(newTheme)
   }
 
   const navLinks = [
@@ -33,9 +47,28 @@ export default function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
+      const currentScrollY = window.scrollY
+      
+      // Basic scroll detection
+      setIsScrolled(currentScrollY > 20)
+      
+      // Collapse to logo when scrolling down past 100px
+      // Expand when scrolling up
+      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+        setIsCollapsed(true)
+      } else if (currentScrollY < lastScrollY.current) {
+        setIsCollapsed(false)
+      }
+      
+      // Always expand if at the top
+      if (currentScrollY < 50) {
+        setIsCollapsed(false)
+      }
+      
+      lastScrollY.current = currentScrollY
     }
-    window.addEventListener('scroll', handleScroll)
+    
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
@@ -48,65 +81,84 @@ export default function Navigation() {
     }
   }, [pathname])
 
+  // Determine if nav should be expanded (either not collapsed, or collapsed but hovered)
+  const isExpanded = !isCollapsed || isHovered
+
   return (
     <>
       {/* Desktop Floating Navigation */}
-      <nav className="hidden md:block fixed top-8 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500">
-        <div className={`
-          floating-nav relative flex items-center gap-2 px-2 py-2
-          ${isScrolled ? 'nav-scrolled' : ''}
-        `}>
-          {/* Logo */}
+      <nav className="hidden md:block fixed top-3 left-3 z-50 transition-all duration-500">
+        <div 
+          ref={navRef}
+          className={`
+            floating-nav relative flex items-center
+            ${isScrolled ? 'nav-scrolled' : ''}
+            ${isCollapsed && !isHovered ? 'nav-collapsed px-1 py-1' : 'px-2 py-2'}
+            transition-all duration-500 ease-in-out overflow-hidden
+          `}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          {/* Logo - Always visible */}
           <Link 
             href="/" 
-            className="nav-logo-wrapper p-3 rounded-full transition-all duration-300"
+            className={`nav-logo-wrapper p-1.5 rounded-full transition-all duration-300 ${isCollapsed && !isHovered ? 'nav-logo-collapsed' : ''}`}
             aria-label="Sunstone Inclusivity Network Home"
           >
             <Image
               src="/assets/images/logo/sun-only-logo.webp"
-              alt="SIN"
-              width={32}
-              height={32}
-              className="w-8 h-8 transition-transform duration-300"
+              alt="Sunstone Inclusivity Network Logo - Home"
+              width={44}
+              height={44}
+              className="w-11 h-11 transition-transform duration-300"
               priority
             />
           </Link>
 
-          <div className="h-6 w-px bg-gray-300 dark:bg-gray-600 mx-1" />
+          {/* Navigation elements - hidden when collapsed */}
+          <div className={`
+            nav-collapsible-content flex items-center gap-2 overflow-hidden
+            transition-all duration-500 ease-in-out
+            ${isExpanded ? 'max-w-[600px] opacity-100 ml-2' : 'max-w-0 opacity-0 ml-0'}
+          `}>
+            <div className="h-6 w-px bg-gray-300 dark:bg-gray-600 mx-1" />
 
-          {/* Navigation Links */}
-          <div className="flex items-center gap-1">
-            {navLinks.slice(1).map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`
-                  nav-link relative px-5 py-2.5 rounded-full font-medium text-sm tracking-wide
-                  transition-all duration-300 overflow-hidden
-                  ${activeLink === link.href ? 'nav-link-active' : ''}
-                `}
-                onMouseEnter={() => setActiveLink(link.href)}
-                onMouseLeave={() => setActiveLink(pathname)}
-              >
-                <span className="relative z-10">{link.label}</span>
-                <div className="nav-link-bg" />
-              </Link>
-            ))}
-          </div>
-
-          <div className="h-6 w-px bg-gray-300 dark:bg-gray-600 mx-1" />
-
-          {/* Theme Toggle */}
-          <button
-            onClick={toggleTheme}
-            className="theme-toggle p-3 rounded-full transition-all duration-300"
-            aria-label="Toggle theme"
-          >
-            <div className="relative w-5 h-5">
-              <Sun className={`absolute inset-0 w-5 h-5 transition-all duration-300 ${theme === 'dark' ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-90'}`} />
-              <Moon className={`absolute inset-0 w-5 h-5 transition-all duration-300 ${theme === 'dark' ? 'opacity-0 rotate-90' : 'opacity-100 rotate-0'}`} />
+            {/* Navigation Links */}
+            <div className="flex items-center gap-1">
+              {navLinks.slice(1).map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`
+                    nav-link relative px-5 py-2.5 rounded-full font-medium text-sm tracking-wide
+                    transition-all duration-300 overflow-hidden
+                    ${activeLink === link.href ? 'nav-link-active' : ''}
+                  `}
+                  onMouseEnter={() => setActiveLink(link.href)}
+                  onMouseLeave={() => setActiveLink(pathname)}
+                >
+                  <span className="relative z-10">{link.label}</span>
+                  <div className="nav-link-bg" />
+                </Link>
+              ))}
             </div>
-          </button>
+
+            <div className="h-6 w-px bg-gray-300 dark:bg-gray-600 mx-1" />
+
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              onTouchEnd={toggleTheme}
+              className="theme-toggle p-3 rounded-full transition-all duration-300"
+              aria-label="Toggle theme"
+              style={{ touchAction: 'manipulation' }}
+            >
+              <div className="relative w-5 h-5">
+                <Sun className={`absolute inset-0 w-5 h-5 transition-all duration-300 ${theme === 'dark' ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-90'}`} />
+                <Moon className={`absolute inset-0 w-5 h-5 transition-all duration-300 ${theme === 'dark' ? 'opacity-0 rotate-90' : 'opacity-100 rotate-0'}`} />
+              </div>
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -189,8 +241,18 @@ export default function Navigation() {
           {/* Theme Toggle - Separate from slider */}
           <button
             onClick={toggleTheme}
+            onTouchStart={(e) => {
+              // Prevent touch events from interfering with slider
+              e.stopPropagation()
+            }}
+            onTouchEnd={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              toggleTheme(e)
+            }}
             className="mobile-theme-toggle flex items-center justify-center"
             aria-label="Toggle theme"
+            style={{ touchAction: 'manipulation' }}
           >
             <div className="relative w-6 h-6 flex items-center justify-center">
               <Sun className={`absolute w-6 h-6 transition-all duration-300 ${theme === 'dark' ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-90'}`} />

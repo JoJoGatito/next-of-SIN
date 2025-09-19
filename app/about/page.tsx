@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { Users, Heart, Target, Sparkles } from 'lucide-react'
+import { AccessibleGradient } from '@/components/AccessibleGradient'
 
 // Board members data
 const boardMembers = [
@@ -45,7 +46,9 @@ export default function AboutPage() {
       <section className="py-16 px-4 md:px-8 lg:px-16 bg-white dark:bg-gray-900">
         <div className="max-w-4xl mx-auto">
           <div className="prose dark:prose-invert max-w-none">
-            <h2 className="text-3xl font-bold mb-6 gradient-text">Our Mission</h2>
+            <h2 className="text-3xl font-bold mb-6">
+              <AccessibleGradient text="Our Mission" />
+            </h2>
             
             <p className="text-lg mb-6 text-foreground">
               At Sunstone Inclusivity Network, we believe true belonging is built by the community, 
@@ -67,7 +70,11 @@ export default function AboutPage() {
               authentically, be celebrated, and have a voice in shaping the future.
             </p>
 
-            <div className="bg-gradient-to-r from-sin-orange to-sin-yellow p-8 rounded-xl my-12">
+            <div 
+              className="bg-gradient-to-r from-sin-orange to-sin-yellow p-8 rounded-xl my-12"
+              role="region"
+              aria-label="Our values statement"
+            >
               <p className="text-2xl font-bold text-white text-center">
                 We're not just inclusive. We are transformative.
               </p>
@@ -79,8 +86,8 @@ export default function AboutPage() {
       {/* What Sets Us Apart Section */}
       <section className="py-16 px-4 md:px-8 lg:px-16 bg-gray-50 dark:bg-gray-950">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold mb-8 gradient-text">
-            What Sets Sunstone Inclusivity Network Apart
+          <h2 className="text-3xl font-bold mb-8">
+            <AccessibleGradient text="What Sets Sunstone Inclusivity Network Apart" />
           </h2>
           
           <p className="text-lg mb-8 text-foreground">
@@ -146,7 +153,11 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="bg-gradient-to-r from-sin-red via-sin-orange to-sin-yellow p-8 rounded-xl mt-12">
+          <div 
+            className="bg-gradient-to-r from-sin-red via-sin-orange to-sin-yellow p-8 rounded-xl mt-12"
+            role="region"
+            aria-label="Our approach statement"
+          >
             <p className="text-2xl font-bold text-white text-center">
               We don't just include. We disrupt, reimagine, and rebuild.
             </p>
@@ -171,14 +182,15 @@ export default function AboutPage() {
               <div key={member.id} className="relative group">
                 {/* Sun rays container */}
                 <div className="relative">
-                  {/* Sun head background */}
-                  <div className="absolute inset-0 flex items-center justify-center">
+                  {/* Sun head background - decorative */}
+                  <div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
                     <Image
                       src="/assets/images/board/sun-head.webp"
                       alt=""
                       width={300}
                       height={300}
                       className="opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+                      aria-hidden="true"
                     />
                   </div>
                   
@@ -192,8 +204,12 @@ export default function AboutPage() {
                         className="object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-sin-orange/50 to-sin-red/50 flex items-center justify-center">
-                        <Users className="w-24 h-24 text-white/50" />
+                      <div 
+                        className="w-full h-full bg-gradient-to-br from-sin-orange/50 to-sin-red/50 flex items-center justify-center"
+                        role="img"
+                        aria-label="Board member position available - placeholder image"
+                      >
+                        <Users className="w-24 h-24 text-white/50" aria-hidden="true" />
                       </div>
                     )}
                   </div>

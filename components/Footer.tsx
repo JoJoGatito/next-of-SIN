@@ -159,13 +159,17 @@ export default function Footer() {
               </a>
             </div>
             <div className="text-gray-300 text-sm">
-              A 501(c)(3) Nonprofit Organization
+              A 501(c)(3) Nonprofit Organization | EIN: 33-3449307
             </div>
           </div>
         </div>
 
-        {/* Rainbow Bar */}
-        <div className="h-1 bg-rainbow-gradient mt-8 rounded-full"></div>
+        {/* Rainbow Bar - decorative */}
+        <div 
+          className="h-1 bg-rainbow-gradient mt-8 rounded-full"
+          aria-hidden="true"
+          role="presentation"
+        ></div>
       </div>
     </footer>
   )

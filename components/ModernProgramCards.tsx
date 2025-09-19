@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Rainbow, Heart, Accessibility, Utensils, Palette, ChevronDown, Calendar } from 'lucide-react'
+import { AccessibleGradient } from './AccessibleGradient'
 
 const programs = [
   {
@@ -65,7 +66,7 @@ export default function ModernProgramCards() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
-            Our <span className="gradient-text">Programs</span>
+            Our <AccessibleGradient text="Programs" />
           </h2>
           <p className="text-muted-foreground text-lg">
             Five pathways to inclusivity and community empowerment
@@ -94,15 +95,32 @@ export default function ModernProgramCards() {
                       isExpanded ? 'ring-2 ring-sin-orange lg:ring-2' : 'hover:scale-105 hover:-translate-y-1'
                     }`}
                     onClick={() => toggleCard(program.id)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        toggleCard(program.id)
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    aria-expanded={isExpanded}
+                    aria-label={`${program.title} program card. ${isExpanded ? 'Expanded' : 'Click to expand'}`}
                   >
-                    {/* Gradient accent line */}
-                    <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${program.color}`} />
+                    {/* Gradient accent line - hidden from screen readers */}
+                    <div 
+                      className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${program.color}`}
+                      aria-hidden="true"
+                      role="presentation"
+                    />
                     
                     {/* Compact view - always visible */}
                     <div className="p-4">
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex items-center space-x-3">
-                          <div className={`p-2 rounded-lg bg-gradient-to-br ${program.color} bg-opacity-10`}>
+                          <div 
+                            className={`p-2 rounded-lg bg-gradient-to-br ${program.color} bg-opacity-10`}
+                            aria-hidden="true"
+                          >
                             <program.icon className="w-6 h-6 text-sin-orange" />
                           </div>
                           <div className="flex-1">
@@ -137,7 +155,9 @@ export default function ModernProgramCards() {
                         {/* Meeting frequency */}
                         {program.meetingFrequency && (
                           <div className="flex flex-wrap gap-3">
-                            <div className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-sin-orange/10 to-sin-yellow/10 rounded-full">
+                            <div 
+                              className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-sin-orange/10 to-sin-yellow/10 rounded-full"
+                            >
                               <Calendar className="w-4 h-4 text-sin-orange" />
                               <span className="text-sm font-medium text-foreground">{program.meetingFrequency}</span>
                             </div>
@@ -152,6 +172,7 @@ export default function ModernProgramCards() {
                               e.stopPropagation()
                               // Handle learn more action
                             }}
+                            aria-label={`Learn more about ${program.title}`}
                           >
                             Learn More
                           </button>
@@ -161,6 +182,7 @@ export default function ModernProgramCards() {
                               e.stopPropagation()
                               // Handle join action
                             }}
+                            aria-label={`Join ${program.title} program`}
                           >
                             Join Program
                           </button>
@@ -180,14 +202,21 @@ export default function ModernProgramCards() {
             <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-xl border border-border/50 shadow-lg p-6 mx-auto max-w-4xl">
               {/* Header */}
               <div className="flex items-center space-x-4 mb-6">
-                <div className={`p-3 rounded-lg bg-gradient-to-br ${selectedProgram.color} bg-opacity-10`}>
+                <div 
+                  className={`p-3 rounded-lg bg-gradient-to-br ${selectedProgram.color} bg-opacity-10`}
+                  aria-hidden="true"
+                >
                   <selectedProgram.icon className="w-8 h-8 text-sin-orange" />
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold text-foreground">
                     {selectedProgram.title}
                   </h3>
-                  <div className={`w-12 h-1 bg-gradient-to-r ${selectedProgram.color} rounded-full mt-2`} />
+                  <div 
+                    className={`w-12 h-1 bg-gradient-to-r ${selectedProgram.color} rounded-full mt-2`}
+                    aria-hidden="true"
+                    role="presentation"
+                  />
                 </div>
               </div>
               
@@ -200,7 +229,9 @@ export default function ModernProgramCards() {
                 {/* Meeting frequency */}
                 {selectedProgram.meetingFrequency && (
                   <div className="flex flex-wrap gap-3">
-                    <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-sin-orange/10 to-sin-yellow/10 rounded-full">
+                    <div 
+                      className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-sin-orange/10 to-sin-yellow/10 rounded-full"
+                    >
                       <Calendar className="w-5 h-5 text-sin-orange" />
                       <span className="text-base font-medium text-foreground">{selectedProgram.meetingFrequency}</span>
                     </div>
@@ -215,6 +246,7 @@ export default function ModernProgramCards() {
                       e.stopPropagation()
                       // Handle learn more action
                     }}
+                    aria-label={`Learn more about ${selectedProgram.title}`}
                   >
                     Learn More
                   </button>
@@ -224,6 +256,7 @@ export default function ModernProgramCards() {
                       e.stopPropagation()
                       // Handle join action
                     }}
+                    aria-label={`Join ${selectedProgram.title} program`}
                   >
                     Join Program
                   </button>
