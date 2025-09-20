@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { Rainbow, Heart, Accessibility, Utensils, Palette, ChevronDown, Calendar } from 'lucide-react'
 import { AccessibleGradient } from './AccessibleGradient'
 
@@ -9,7 +10,7 @@ const programs = [
     id: 1,
     title: "Sunstone Youth Group",
     slug: "sunstone-youth-group",
-    description: "A safe and supportive space for LGBTQ+ youth to connect, learn, and grow together.",
+    description: "A safe and supportive space for LGBTQ+ youth to connect, learn, and grow together through weekly meetings, mentorship, and community activities.",
     color: "from-orange-400 to-orange-600",
     icon: Rainbow,
     meetingFrequency: "Weekly meetings"
@@ -18,7 +19,7 @@ const programs = [
     id: 2,
     title: "Rock & Stone",
     slug: "rock-and-stone",
-    description: "Inclusive outdoor and nature group that welcomes everyone who wants to explore and connect with the natural world. We organize various outdoor activities that cater to all skill levels and abilities.",
+    description: "Inclusive outdoor and nature group that welcomes everyone who wants to explore and connect with the natural world. We organize accessible activities for all skill levels and abilities in Southern Colorado.",
     color: "from-yellow-400 to-amber-600",
     icon: Heart,
     meetingFrequency: null
@@ -45,7 +46,7 @@ const programs = [
     id: 5,
     title: "Hue House",
     slug: "hue-house",
-    description: "A community of BIPOC focused discussions, meet & greets, and local events that celebrate the diversity of the queer community and it's allies.",
+    description: "A vibrant community of BIPOC-focused discussions, meet & greets, and local events that celebrate the diversity of the queer community and its allies in Southern Colorado.",
     color: "from-purple-400 to-purple-600",
     icon: Palette,
     meetingFrequency: "Monthly meetings"
@@ -69,7 +70,7 @@ export default function ModernProgramCards() {
             Our <AccessibleGradient text="Programs" />
           </h2>
           <p className="text-muted-foreground text-lg">
-            Five pathways to inclusivity and community empowerment
+            Five pathways to inclusivity and community empowerment in Southern Colorado
           </p>
         </div>
 
@@ -104,7 +105,7 @@ export default function ModernProgramCards() {
                     role="button"
                     tabIndex={0}
                     aria-expanded={isExpanded}
-                    aria-label={`${program.title} program card. ${isExpanded ? 'Expanded' : 'Click to expand'}`}
+                    aria-label={`${program.title} - ${program.description} ${isExpanded ? 'Expanded' : 'Click to expand for more information'}`}
                   >
                     {/* Gradient accent line - hidden from screen readers */}
                     <div 
@@ -121,7 +122,7 @@ export default function ModernProgramCards() {
                             className={`p-2 rounded-lg bg-gradient-to-br ${program.color} bg-opacity-10`}
                             aria-hidden="true"
                           >
-                            <program.icon className="w-6 h-6 text-sin-orange" />
+                            <program.icon className="w-6 h-6 text-sin-orange" aria-hidden="true" />
                           </div>
                           <div className="flex-1">
                             <h3 className="font-bold text-lg text-foreground leading-tight">
@@ -166,26 +167,26 @@ export default function ModernProgramCards() {
                         
                         {/* Call to action buttons */}
                         <div className="flex flex-wrap gap-2 pt-2">
-                          <button 
+                          <Link
+                            href={`/programs/${program.slug}`}
                             className="px-4 py-2 bg-gradient-to-r from-sin-orange to-sin-yellow text-white font-medium rounded-lg hover:shadow-md transition-all duration-300"
                             onClick={(e) => {
                               e.stopPropagation()
-                              // Handle learn more action
                             }}
-                            aria-label={`Learn more about ${program.title}`}
+                            aria-label={`Learn more about ${program.title} program`}
                           >
                             Learn More
-                          </button>
-                          <button 
+                          </Link>
+                          <Link
+                            href={`/programs/${program.slug}#join`}
                             className="px-4 py-2 border border-sin-orange text-sin-orange font-medium rounded-lg hover:bg-sin-orange/10 transition-all duration-300"
                             onClick={(e) => {
                               e.stopPropagation()
-                              // Handle join action
                             }}
-                            aria-label={`Join ${program.title} program`}
+                            aria-label={`Join ${program.title} program and community`}
                           >
                             Join Program
-                          </button>
+                          </Link>
                         </div>
                       </div>
                     </div>
@@ -206,7 +207,7 @@ export default function ModernProgramCards() {
                   className={`p-3 rounded-lg bg-gradient-to-br ${selectedProgram.color} bg-opacity-10`}
                   aria-hidden="true"
                 >
-                  <selectedProgram.icon className="w-8 h-8 text-sin-orange" />
+                  <selectedProgram.icon className="w-8 h-8 text-sin-orange" aria-hidden="true" />
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold text-foreground">
@@ -240,26 +241,26 @@ export default function ModernProgramCards() {
                 
                 {/* Call to action buttons */}
                 <div className="flex flex-wrap gap-4 pt-2">
-                  <button 
+                  <Link
+                    href={`/programs/${selectedProgram.slug}`}
                     className="px-6 py-3 bg-gradient-to-r from-sin-orange to-sin-yellow text-white font-medium rounded-lg hover:shadow-md transition-all duration-300 hover:scale-105"
                     onClick={(e) => {
                       e.stopPropagation()
-                      // Handle learn more action
                     }}
-                    aria-label={`Learn more about ${selectedProgram.title}`}
+                    aria-label={`Learn more about ${selectedProgram.title} program details, events, and community`}
                   >
                     Learn More
-                  </button>
-                  <button 
+                  </Link>
+                  <Link
+                    href={`/programs/${selectedProgram.slug}#join`}
                     className="px-6 py-3 border-2 border-sin-orange text-sin-orange font-medium rounded-lg hover:bg-sin-orange/10 transition-all duration-300 hover:scale-105"
                     onClick={(e) => {
                       e.stopPropagation()
-                      // Handle join action
                     }}
-                    aria-label={`Join ${selectedProgram.title} program`}
+                    aria-label={`Join ${selectedProgram.title} program and community`}
                   >
                     Join Program
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

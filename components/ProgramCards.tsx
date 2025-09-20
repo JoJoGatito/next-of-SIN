@@ -3,14 +3,14 @@ const programs = [
     id: 1,
     title: "Sunstone Youth Group",
     slug: "sunstone-youth-group",
-    description: "A safe and supportive space for LGBTQ+ youth to connect, learn, and grow together.",
+    description: "A safe and supportive space for LGBTQ+ youth to connect, learn, and grow together through weekly meetings and community activities.",
     color: "bg-sin-orange",
   },
   {
     id: 2,
     title: "Rock & Stone",
     slug: "rock-and-stone",
-    description: "Inclusive outdoor and nature group that welcomes everyone who wants to explore and connect with the natural world. We organize various outdoor activities that cater to all skill levels and abilities.",
+    description: "Inclusive outdoor and nature group that welcomes everyone who wants to explore and connect with the natural world. We organize accessible activities for all skill levels and abilities.",
     color: "bg-sin-yellow",
   },
   {
@@ -24,14 +24,14 @@ const programs = [
     id: 4,
     title: "Cafeteria Collective",
     slug: "cafeteria-collective",
-    description: "Queer meet and greet where we can share stories, food, connections, and build community.",
+    description: "Queer meet and greet where we can share stories, food, connections, and build community in Southern Colorado.",
     color: "bg-green-500",
   },
   {
     id: 5,
     title: "Hue House",
     slug: "hue-house",
-    description: "A community of BIPOC focused discussions, meet & greets, and local events that celebrate the diversity of the queer community and it's allies.",
+    description: "A community of BIPOC-focused discussions, meet & greets, and local events that celebrate the diversity of the queer community and its allies in Southern Colorado.",
     color: "bg-purple-500",
   },
 ]
@@ -43,16 +43,20 @@ export default function ProgramCards() {
         <div
           key={program.id}
           className="card hover:shadow-xl transition-shadow duration-300 group">
-          <div className={`h-2 ${program.color} mb-4 rounded-full`}></div>
+          <div
+            className={`h-2 ${program.color} mb-4 rounded-full`}
+            aria-hidden="true"
+          ></div>
           <h3 className="text-xl font-bold mb-3 group-hover:text-sin-orange transition-colors">
             {program.title}
           </h3>
           <p className="text-gray-600 dark:text-gray-400">
             {program.description}
           </p>
-          <a 
-            href="/about#programs"
-            className="mt-4 text-sin-orange font-semibold group-hover:translate-x-2 transition-transform inline-block">
+          <a
+            href={`/programs/${program.slug}`}
+            className="mt-4 text-sin-orange font-semibold group-hover:translate-x-2 transition-transform inline-block"
+            aria-label={`Learn more about ${program.title} program`}>
             Learn More →
           </a>
         </div>

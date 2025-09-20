@@ -1,0 +1,7 @@
+# robots.txt for Sunstone Inclusivity Network
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://sunstoneinclusivity.network/sitemap.xml
