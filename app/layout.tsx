@@ -4,6 +4,7 @@ import './globals.css'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
+import ChromeGuard from '@/components/ChromeGuard'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -58,11 +59,15 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navigation />
+          <ChromeGuard>
+            <Navigation />
+          </ChromeGuard>
           <main id="main" className="flex-grow pb-16 md:pb-0">
             {children}
           </main>
-          <Footer />
+          <ChromeGuard>
+            <Footer />
+          </ChromeGuard>
         </ThemeProvider>
       </body>
     </html>

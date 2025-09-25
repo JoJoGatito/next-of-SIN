@@ -1,56 +1,45 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Calendar, Clock, MapPin } from 'lucide-react'
 
-const events = [
-  {
-    id: 1,
-    title: "Pride Month Kickoff Celebration",
-    date: "June 1, 2024",
-    time: "6:00 PM",
-    location: "Community Center",
-    program: "Sunstone Youth Group",
-    color: "from-sin-orange to-sin-yellow",
-    attendees: 150
-  },
-  {
-    id: 2,
-    title: "Disability Awareness Workshop",
-    date: "June 5, 2024",
-    time: "2:00 PM",
-    location: "Virtual + In-Person",
-    program: "Dis'abitch",
-    color: "from-sin-orange to-sin-red",
-    attendees: 75
-  },
-  {
-    id: 3,
-    title: "Community Potluck & Art Show",
-    date: "June 10, 2024",
-    time: "5:30 PM",
-    location: "Hue House",
-    program: "Cafeteria Collective",
-    color: "from-sin-yellow to-sin-orange",
-    attendees: 100
-  },
-  {
-    id: 4,
-    title: "Peer Support Circle",
-    date: "June 15, 2024",
-    time: "7:00 PM",
-    location: "Rock & Stone Center",
-    program: "Rock & Stone",
-    color: "from-sin-red to-sin-orange",
-    attendees: 30
+interface TimelineEvent {
+  id: string
+  title?: string
+  start?: string
+  end?: string
+  location?: string
+  program?: string
+  description?: string
+  capacity?: number
+}
+
+interface InteractiveEventsTimelineProps {
+  events: TimelineEvent[]
+}
+
+function getProgramColor(program?: string) {
+  switch (program) {
+    case 'Hue House':
+      return 'from-purple-100 to-purple-200 dark:from-purple-800 dark:to-purple-900'
+    case 'Rock & Stone':
+      return 'from-yellow-100 to-amber-200 dark:from-yellow-900 dark:to-amber-900'
+    case 'Sunstone Youth Group':
+      return 'from-orange-100 to-yellow-200 dark:from-orange-900 dark:to-yellow-900'
+    default:
+      return 'from-orange-100 to-yellow-200 dark:from-orange-900 dark:to-yellow-900'
   }
-]
+}
 
-export default function InteractiveEventsTimeline() {
-  const [selectedEvent, setSelectedEvent] = useState<number | null>(null)
+export default function InteractiveEventsTimeline({ events }: InteractiveEventsTimelineProps) {
+  const [selectedEvent, setSelectedEvent] = useState<string | null>(null)
 
-  // Show only the first 4 events
-  const upcomingEvents = events.slice(0, 4)
+  useEffect(() => {
+    console.log('[InteractiveEventsTimeline] received events', { count: events.length })
+  }, [events])
+
+  // Show only the first 3 upcoming events
+  const upcomingEvents = (events || []).slice(0, 3)
 
   return (
     <section className="py-16 px-4 md:px-8 lg:px-16 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900">
@@ -86,43 +75,52 @@ export default function InteractiveEventsTimeline() {
               >
                 <div className="relative overflow-hidden rounded-2xl transition-all duration-300 hover:transform hover:scale-105 animate-fade-in">
                   {/* Gradient background */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${event.color} opacity-90`} />
+                  <div className={`absolute inset-0 bg-gradient-to-br ${getProgramColor(event.program)} opacity-90`} />
                   
                   {/* Glass morphism card */}
-                  <div className="relative backdrop-blur-xl bg-white/20 dark:bg-black/20 p-6">
+                  <div className="relative backdrop-blur-xl bg-card/20 p-6">
                     <div className="flex items-start justify-between mb-3">
                       <div>
-                        <h3 className="text-xl font-bold text-white">{event.title}</h3>
-                        <p className="text-white/80 text-sm mt-1">{event.program}</p>
+                        <h3 className="text-xl font-bold text-foreground">{event.title}</h3>
+                        <p className="text-foreground/80 text-sm mt-1">{event.program}</p>
                       </div>
-                      <span className="bg-white/20 backdrop-blur px-3 py-1 rounded-full text-white text-sm">
-                        {event.attendees} attending
+                      <span className="bg-muted/80 backdrop-blur px-3 py-1 rounded-full text-foreground text-sm">
+                        {event.program ?? 'Upcoming'}
                       </span>
                     </div>
                     
                     {/* Event details */}
-                    <div className={`grid grid-cols-1 gap-2 text-white/90 text-sm transition-all duration-300 ${
+                    <div className={`grid grid-cols-1 gap-2 text-foreground/90 text-sm transition-all duration-300 ${
                       selectedEvent === event.id ? 'opacity-100 max-h-40' : 'opacity-70 max-h-0 overflow-hidden'
                     }`}>
                       <div className="flex items-center gap-2 mt-3">
                         <Calendar className="w-4 h-4" />
-                        {event.date}
+                        {event.start
+                          ? new Date(event.start).toLocaleDateString('en-US', {
+                              weekday: 'long',
+                              month: 'long',
+                              day: 'numeric'
+                            })
+                          : 'Date TBD'}
                       </div>
                       <div className="flex items-center gap-2">
                         <Clock className="w-4 h-4" />
-                        {event.time}
+                        {event.start
+                          ? new Date(event.start).toLocaleTimeString('en-US', {
+                              hour: 'numeric',
+                              minute: '2-digit',
+                              hour12: true
+                            })
+                          : 'Time TBD'}
                       </div>
                       <div className="flex items-center gap-2">
                         <MapPin className="w-4 h-4" />
                         {event.location}
                       </div>
-                      <button className="mt-3 bg-white/20 backdrop-blur px-4 py-2 rounded-full text-white font-semibold hover:bg-white/30 transition-colors">
-                        Register Now
-                      </button>
                     </div>
                     
                     {/* Click indicator */}
-                    <div className={`text-white/70 text-xs mt-3 ${selectedEvent === event.id ? 'hidden' : ''}`}>
+                    <div className={`text-muted-foreground text-xs mt-3 ${selectedEvent === event.id ? 'hidden' : ''}`}>
                       Click for details
                     </div>
                   </div>

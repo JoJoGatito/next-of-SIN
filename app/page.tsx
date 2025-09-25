@@ -3,14 +3,51 @@ import ModernProgramCards from '@/components/ModernProgramCards'
 import InteractiveEventsTimeline from '@/components/InteractiveEventsTimeline'
 import ModernArtistsGallery from '@/components/ModernArtistsGallery'
 import Sponsors from '@/components/Sponsors'
+import { client } from '@/lib/sanity.client'
+import { upcomingEventsQuery } from '@/lib/queries'
 
-export default function Home() {
+export const revalidate = 60
+
+type SanityEvent = {
+  _id: string
+  title?: string
+  start?: string
+  end?: string
+  location?: string
+  program?: string
+  description?: string
+  capacity?: number
+}
+
+export default async function Home() {
+  let raw: SanityEvent[] = []
+  try {
+    raw = await client.fetch<SanityEvent[]>(upcomingEventsQuery)
+  } catch (err) {
+    console.error('[Home] Sanity fetch failed', err)
+  }
+
+  const valid = (raw || []).filter((e): e is SanityEvent & { start: string } => typeof e.start === 'string' && e.start.length > 0)
+
+  const transformed = valid.map((e) => ({
+    id: e._id,
+    title: e.title ?? 'Untitled Event',
+    start: e.start,
+    end: e.end,
+    location: e.location,
+    program: e.program,
+    description: e.description ?? '',
+    capacity: e.capacity,
+  }))
+
+  console.log('[Home] upcoming events', { total: raw?.length ?? 0, valid: valid.length, transformed: transformed.length })
+
   return (
     <div className="min-h-screen relative">
       <ModernHeroSection />
       
       {/* Rainbow Divider */}
-      <div 
+      <div
         className="h-1 rainbow-bar"
         style={{
           background: 'linear-gradient(90deg, #ff0000 0%, #ff7a00 14%, #ffd600 28%, #48ff00 42%, #00ffd5 57%, #002bff 71%, #7a00ff 85%, #ff00c8 100%)',
@@ -22,7 +59,7 @@ export default function Home() {
       <ModernProgramCards />
       
       {/* Rainbow Divider */}
-      <div 
+      <div
         className="h-1 rainbow-bar"
         style={{
           background: 'linear-gradient(90deg, #ff0000 0%, #ff7a00 14%, #ffd600 28%, #48ff00 42%, #00ffd5 57%, #002bff 71%, #7a00ff 85%, #ff00c8 100%)',
@@ -31,10 +68,10 @@ export default function Home() {
         role="presentation"
       />
       
-      <InteractiveEventsTimeline />
+      <InteractiveEventsTimeline events={transformed} />
       
       {/* Rainbow Divider */}
-      <div 
+      <div
         className="h-1 rainbow-bar"
         style={{
           background: 'linear-gradient(90deg, #ff0000 0%, #ff7a00 14%, #ffd600 28%, #48ff00 42%, #00ffd5 57%, #002bff 71%, #7a00ff 85%, #ff00c8 100%)',
@@ -46,7 +83,7 @@ export default function Home() {
       <ModernArtistsGallery />
 
       {/* Rainbow Divider */}
-      <div 
+      <div
         className="h-1 rainbow-bar"
         style={{
           background: 'linear-gradient(90deg, #ff0000 0%, #ff7a00 14%, #ffd600 28%, #48ff00 42%, #00ffd5 57%, #002bff 71%, #7a00ff 85%, #ff00c8 100%)',
@@ -74,8 +111,8 @@ export default function Home() {
             As a 501(c)(3) nonprofit, your contribution is tax-deductible and directly supports our programs for queer, disabled, and BIPOC communities.
           </p>
           <div className="flex justify-center px-4 sm:px-0">
-            <a 
-              href="/donate" 
+            <a
+              href="/donate"
               className="bg-white dark:bg-sin-orange text-sin-orange dark:text-white px-8 sm:px-10 py-3 sm:py-4 rounded-lg font-semibold hover:bg-white/95 dark:hover:bg-sin-yellow dark:hover:text-gray-900 transition-all hover:scale-105 hover:shadow-xl text-base sm:text-lg inline-block border-2 border-transparent hover:border-white/20 dark:hover:border-white/20"
             >
               Make a Donation
@@ -85,7 +122,7 @@ export default function Home() {
       </section>
 
       {/* Rainbow Divider */}
-      <div 
+      <div
         className="h-1 rainbow-bar"
         style={{
           background: 'linear-gradient(90deg, #ff0000 0%, #ff7a00 14%, #ffd600 28%, #48ff00 42%, #00ffd5 57%, #002bff 71%, #7a00ff 85%, #ff00c8 100%)',
