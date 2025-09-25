@@ -10,6 +10,10 @@ export default defineConfig({
   projectId: '9gy6eznb',
   dataset: 'production',
 
+  deployment: {
+    autoUpdates: true,
+  },
+
   plugins: [structureTool(), visionTool()],
 
   schema: {

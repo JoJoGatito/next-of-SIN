@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import EventsClient from '../../components/events/EventsClient'
 import { client } from '../../lib/sanity.client'
 import { eventsQuery } from '../../lib/queries'
@@ -43,5 +44,9 @@ export default async function EventsPage() {
     capacity: e.capacity,
   }))
 
-  return <EventsClient events={transformedEvents} />
+  return (
+    <Suspense fallback={null}>
+      <EventsClient events={transformedEvents} />
+    </Suspense>
+  )
 }
