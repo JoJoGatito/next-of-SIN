@@ -14,16 +14,17 @@ const nextConfig = {
 
     const donateCsp = [
       serializeDirective('default-src', ["'self'"]),
-      serializeDirective('script-src', ["'self'", "'unsafe-inline'", 'https://www.paypal.com', 'https://www.paypalobjects.com']),
+      serializeDirective('script-src', ["'self'", "'unsafe-inline'", 'https://www.paypal.com', 'https://www.paypalobjects.com', 'https://js.stripe.com']),
       serializeDirective('style-src', ["'self'", "'unsafe-inline'", 'https://www.paypalobjects.com']),
       serializeDirective('img-src', ["'self'", 'data:', 'https://www.paypalobjects.com']),
-      serializeDirective('frame-src', ["'self'", 'https://www.paypal.com', 'https://*.paypal.com']),
+      serializeDirective('frame-src', ["'self'", 'https://www.paypal.com', 'https://*.paypal.com', 'https://js.stripe.com']),
       serializeDirective('connect-src', [
         "'self'",
         'https://www.paypal.com',
         'https://*.paypal.com',
         'https://api-m.paypal.com',
         'https://api-m.sandbox.paypal.com',
+        'https://api.stripe.com',
       ]),
       serializeDirective('font-src', ["'self'", 'data:']),
     ].join('; ')

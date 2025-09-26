@@ -186,7 +186,7 @@ function OneTimePaymentForm({
 }
 
 export default function DonatePage() {
-  const [donationType, setDonationType] = useState<DonationType>('monthly')
+  const [donationType, setDonationType] = useState<DonationType>('onetime')
   const [amount, setAmount] = useState<number>(25)
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [isPreparingIntent, setIsPreparingIntent] = useState(false)
@@ -527,46 +527,54 @@ export default function DonatePage() {
 
           {/* Amount Selection */}
           <div className="mb-6">
-            <label className="block text-sm font-medium mb-3">Select Amount</label>
-            <div className="grid grid-cols-3 md:grid-cols-5 gap-3 mb-4">
-              {suggestedAmounts.map((suggestedAmount) => (
-                <button
-                  key={suggestedAmount}
-                  onClick={() => setAmount(suggestedAmount)}
-                  className={`py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
-                    amount === suggestedAmount
-                      ? 'bg-gradient-to-r from-sin-orange to-sin-yellow text-white shadow-md'
-                      : 'bg-muted hover:bg-muted/80 text-foreground'
-                  }`}
-                >
-                  ${suggestedAmount}
-                </button>
-              ))}
-            </div>
+            {donationType === 'onetime' ? (
+              <>
+                <label className="block text-sm font-medium mb-3">Select Amount</label>
+                <div className="grid grid-cols-3 md:grid-cols-5 gap-3 mb-4">
+                  {suggestedAmounts.map((suggestedAmount) => (
+                    <button
+                      key={suggestedAmount}
+                      onClick={() => setAmount(suggestedAmount)}
+                      className={`py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
+                        amount === suggestedAmount
+                          ? 'bg-gradient-to-r from-sin-orange to-sin-yellow text-white shadow-md'
+                          : 'bg-muted hover:bg-muted/80 text-foreground'
+                      }`}
+                    >
+                      ${suggestedAmount}
+                    </button>
+                  ))}
+                </div>
 
-            {/* Custom Amount Input */}
-            <div className="relative">
-              <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-foreground/50">
-                $
-              </span>
-              <input
-                type="number"
-                value={amount}
-                min={0}
-                onChange={(event) => {
-                  const nextValue = Number(event.target.value)
-                  if (Number.isNaN(nextValue)) {
-                    setAmount(0)
-                  } else {
-                    setAmount(Math.max(0, Math.round(nextValue)))
-                  }
-                }}
-                className="w-full pl-8 pr-4 py-3 bg-background border border-border rounded-lg 
+                {/* Custom Amount Input */}
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-foreground/50">
+                    $
+                  </span>
+                  <input
+                    type="number"
+                    value={amount}
+                    min={0}
+                    onChange={(event) => {
+                      const nextValue = Number(event.target.value)
+                      if (Number.isNaN(nextValue)) {
+                        setAmount(0)
+                      } else {
+                        setAmount(Math.max(0, Math.round(nextValue)))
+                      }
+                    }}
+                    className="w-full pl-8 pr-4 py-3 bg-background border border-border rounded-lg 
                          focus:outline-none focus:ring-2 focus:ring-sin-orange focus:border-transparent
                          transition-all duration-200"
-                placeholder="Enter custom amount"
-              />
-            </div>
+                    placeholder="Enter custom amount"
+                  />
+                </div>
+              </>
+            ) : (
+              <div className="rounded-lg border border-dashed border-muted-foreground/30 bg-muted/40 px-4 py-3 text-sm text-foreground/70">
+                Monthly donations are processed through Open Collective. You can choose the amount on the checkout page.
+              </div>
+            )}
           </div>
 
           {/* Donation Impact */}
@@ -574,7 +582,7 @@ export default function DonatePage() {
             <h4 className="font-semibold mb-2">Your Impact</h4>
             <p className="text-sm text-foreground/70">
               {donationType === 'monthly' ? (
-                <>A ${amount} monthly donation provides ongoing support for our programs.</>
+                <>Recurring gifts provide steady, predictable support for our programs.</>
               ) : (
                 <>Your ${amount} donation helps us continue our mission.</>
               )}
@@ -585,13 +593,13 @@ export default function DonatePage() {
           <div className="space-y-4">
             {donationType === 'monthly' ? (
               <a
-                href="https://opencollective.com/sincollective"
+                href="https://opencollective.com/sunstone-inclusivity-network/contribute/monthly-supporter-88863/checkout"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full btn-primary flex items-center justify-center gap-2"
               >
-                <CreditCard className="w-5 h-5" />
-                Donate ${amount} Monthly
+                <Calendar className="w-5 h-5" />
+                Give Monthly on Open Collective
               </a>
             ) : (
               <div className="space-y-4">

@@ -9,7 +9,7 @@ let stripeClient: Stripe | null = null
 const getStripe = (secretKey: string): Stripe => {
   if (!stripeClient) {
     stripeClient = new Stripe(secretKey, {
-      apiVersion: '2025-08-27.basil',
+      apiVersion: '2023-10-16' as any, // Use a standard Stripe API version
     })
   }
   return stripeClient
