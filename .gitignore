@@ -168,3 +168,6 @@ playwright-report/
 warp.md
 warp-updated.md
 *.md
+
+# Roo AI assistant
+.roo/
