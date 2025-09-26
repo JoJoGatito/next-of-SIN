@@ -91,7 +91,7 @@ export default function HueHousePage() {
           <p>
             Hue House welcomes BIPOC individuals and respectful allies who are committed to creating 
             spaces that center BIPOC voices and experiences. Join us in building a community where 
-            everyone's whole self is respected, celebrated, and empowered.
+            everyone&apos;s whole self is respected, celebrated, and empowered.
           </p>
 
           <div className="flex flex-wrap gap-4 pt-4 mt-4">

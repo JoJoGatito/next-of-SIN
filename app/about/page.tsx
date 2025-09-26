@@ -21,7 +21,7 @@ const boardMembers = [
     name: "JoJo",
     title: "Board Chair & Founder",
     image: "/assets/images/board/JoJo.webp",
-    bio: "Visionary leader and community builder with a passion for inclusive technology. Guiding our organization's strategic direction and growth."
+    bio: "Visionary leader and community builder with a passion for inclusive technology. Guiding our organization&apos;s strategic direction and growth."
   },
   {
     id: 2,
@@ -35,7 +35,7 @@ const boardMembers = [
     name: "Board Member",
     title: "Coming Soon",
     image: null,
-    bio: "We're looking for passionate community leaders to join our board and help shape the future of inclusivity in Southern Colorado."
+    bio: "We&apos;re looking for passionate community leaders to join our board and help shape the future of inclusivity in Southern Colorado."
   },
 ]
 
@@ -104,7 +104,7 @@ export default function AboutPage() {
                   <span className="text-brand-dark-red dark:text-sin-yellow">
                     Sunstone
                   </span>
-                  {/* The animated underline is clean, I'll keep it */}
+                  {/* The animated underline is clean, I&apos;ll keep it */}
                   <motion.span 
                     className="absolute -bottom-2 left-0 right-0 h-1 bg-brand-dark-red dark:bg-sin-yellow rounded-full"
                     initial={{ scaleX: 0 }}
@@ -180,7 +180,7 @@ export default function AboutPage() {
                   transition={{ duration: 0.3 }}
                 />
                 <p className="text-2xl font-bold text-white text-center relative z-10">
-                  We're not just inclusive. We are transformative.
+                  We&apos;re not just inclusive. We are transformative.
                 </p>
               </motion.div>
             </RevealOnScroll>
@@ -197,8 +197,8 @@ export default function AboutPage() {
             </h2>
             
             <p className="text-lg mb-8 text-foreground">
-              At Sunstone Inclusivity Network, we don't just advocate for marginalized communities; 
-              we empower them to lead, build, and reclaim space. Here's what makes us different:
+              At Sunstone Inclusivity Network, we don&apos;t just advocate for marginalized communities; 
+              we empower them to lead, build, and reclaim space. Here&apos;s what makes us different:
             </p>
           </AnimatedSection>
 
@@ -224,7 +224,7 @@ export default function AboutPage() {
                   </motion.div>
                   <h3 className="font-bold text-lg mb-2 text-sin-orange">Rebuilding the Table</h3>
                   <p className="text-foreground">
-                    We don't just invite people to the table, we rebuild the table entirely; 
+                    We don&apos;t just invite people to the table, we rebuild the table entirely; 
                     Ensuring that those most impacted by exclusion are the ones designing and 
                     leading our programs, events, and initiatives.
                   </p>
@@ -313,7 +313,7 @@ export default function AboutPage() {
                   </motion.div>
                   <h3 className="font-bold text-lg mb-2 text-sin-orange">Direct Action</h3>
                   <p className="text-foreground">
-                    We don't just host discussions, we create real change through direct support, 
+                    We don&apos;t just host discussions, we create real change through direct support, 
                     mutual aid, leadership training, and advocacy initiatives. We equip individuals 
                     and organizations with tangible tools to dismantle oppressive systems.
                   </p>
@@ -371,7 +371,7 @@ export default function AboutPage() {
                   </motion.div>
                   <h3 className="font-bold text-lg mb-2 text-sin-red">Culture Shift</h3>
                   <p className="text-foreground">
-                    Sunstone Inclusivity Network isn't just about events and programs, it's about 
+                    Sunstone Inclusivity Network isn&apos;t just about events and programs, it&apos;s about 
                     shifting culture in Southern Colorado. We are creating new models of equity, 
                     justice, and belonging that go beyond traditional non-profit structures.
                   </p>
@@ -394,7 +394,7 @@ export default function AboutPage() {
                 transition={{ duration: 0.3 }}
               />
               <p className="text-2xl font-bold text-white text-center relative z-10">
-                We don't just include. We disrupt, reimagine, and rebuild.
+                We don&apos;t just include. We disrupt, reimagine, and rebuild.
               </p>
             </motion.div>
           </RevealOnScroll>

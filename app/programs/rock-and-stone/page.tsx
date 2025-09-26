@@ -41,7 +41,7 @@ export default function RockAndStonePage() {
           <h2 className="text-2xl font-bold mb-4">About Rock & Stone</h2>
           <p>
             Rock & Stone is an inclusive outdoor and nature group that welcomes everyone who wants to 
-            explore and connect with the natural world. We're committed to making outdoor experiences 
+            explore and connect with the natural world. We&apos;re committed to making outdoor experiences 
             accessible to people of all abilities, backgrounds, and experience levels.
           </p>
           
@@ -83,7 +83,7 @@ export default function RockAndStonePage() {
 
           <h2 className="text-2xl font-bold my-4">Join Rock & Stone</h2>
           <p>
-            Whether you're an experienced hiker or have never spent much time outdoors, Rock & Stone 
+            Whether you&apos;re an experienced hiker or have never spent much time outdoors, Rock & Stone 
             welcomes you. Our community is built on mutual respect, support, and a shared appreciation 
             for the natural world in Southern Colorado.
           </p>

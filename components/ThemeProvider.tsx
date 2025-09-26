@@ -99,9 +99,9 @@ export function ThemeProvider({
     // Load theme from localStorage if not already loaded
     if (typeof window !== 'undefined') {
       try {
-        const localTheme = localStorage.getItem('theme') as Theme
-        if (localTheme && localTheme !== theme) {
-          setThemeState(localTheme)
+        const localTheme = localStorage.getItem('theme') as Theme | null
+        if (localTheme) {
+          setThemeState((prev) => (prev !== localTheme ? (localTheme as Theme) : prev))
         }
       } catch {
         // Handle localStorage errors silently

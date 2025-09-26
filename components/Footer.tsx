@@ -117,7 +117,7 @@ export default function Footer() {
               <p className="text-gray-300 text-sm">
                 <span className="font-medium text-white">Need assistance?</span> If you encounter any barriers or need content in an alternative format, 
                 please <a href="mailto:info@sunstonein.org" className="text-sin-orange hover:underline">contact us</a>. 
-                We're committed to making our resources accessible to everyone.
+                We&apos;re committed to making our resources accessible to everyone.
               </p>
             </div>
           </div>

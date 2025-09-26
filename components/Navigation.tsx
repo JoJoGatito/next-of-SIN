@@ -7,6 +7,14 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useTheme } from './ThemeProvider'
 import { Sun, Moon, Home, Users, Heart, Calendar, MapPin } from 'lucide-react'
 
+const navLinks = [
+  { href: '/', label: 'HOME', icon: Home },
+  { href: '/about', label: 'ABOUT', icon: Users },
+  { href: '/events', label: 'EVENTS', icon: Calendar },
+  { href: '/donate', label: 'DONATE', icon: Heart },
+  { href: '/local', label: 'LOCAL', icon: MapPin },
+]
+
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -35,13 +43,6 @@ export default function Navigation() {
     setTheme(newTheme)
   }
 
-  const navLinks = [
-    { href: '/', label: 'HOME', icon: Home },
-    { href: '/about', label: 'ABOUT', icon: Users },
-    { href: '/events', label: 'EVENTS', icon: Calendar },
-    { href: '/donate', label: 'DONATE', icon: Heart },
-    { href: '/local', label: 'LOCAL', icon: MapPin },
-  ]
 
   useEffect(() => {
     const handleScroll = () => {
