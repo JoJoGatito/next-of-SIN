@@ -10,34 +10,23 @@ const nextConfig = {
     ],
   },
   async headers() {
-    const paypalScriptSources = [
-      "https://www.paypal.com",
-      "https://www.paypalobjects.com",
-    ]
+    const serializeDirective = (name, values) => `${name} ${values.join(' ')}`
 
-    const paypalFrameSources = [
-      "https://www.paypal.com",
-      "https://*.paypal.com",
-    ]
-
-    const paypalConnectSources = [
-      "https://www.paypal.com",
-      "https://*.paypal.com",
-      "https://api-m.paypal.com",
-      "https://api-m.sandbox.paypal.com",
-    ]
-
-    const directives = [
-      "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'" + paypalScriptSources.map((src) => ` ${src}`).join(''),
-      "style-src 'self' 'unsafe-inline' https://www.paypalobjects.com",
-      "img-src 'self' data: https://www.paypalobjects.com",
-      "frame-src 'self'" + paypalFrameSources.map((src) => ` ${src}`).join(''),
-      "connect-src 'self'" + paypalConnectSources.map((src) => ` ${src}`).join(''),
-      "font-src 'self' data:",
-    ]
-
-    const donateCsp = directives.join('; ')
+    const donateCsp = [
+      serializeDirective('default-src', ["'self'"]),
+      serializeDirective('script-src', ["'self'", "'unsafe-inline'", 'https://www.paypal.com', 'https://www.paypalobjects.com']),
+      serializeDirective('style-src', ["'self'", "'unsafe-inline'", 'https://www.paypalobjects.com']),
+      serializeDirective('img-src', ["'self'", 'data:', 'https://www.paypalobjects.com']),
+      serializeDirective('frame-src', ["'self'", 'https://www.paypal.com', 'https://*.paypal.com']),
+      serializeDirective('connect-src', [
+        "'self'",
+        'https://www.paypal.com',
+        'https://*.paypal.com',
+        'https://api-m.paypal.com',
+        'https://api-m.sandbox.paypal.com',
+      ]),
+      serializeDirective('font-src', ["'self'", 'data:']),
+    ].join('; ')
 
     return [
       {
