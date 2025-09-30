@@ -30,7 +30,7 @@ export default function Footer() {
             <ul className="space-y-2 text-sm">
               <li><a href="/donate" className="text-gray-300 hover:text-sin-orange transition-colors">Donate</a></li>
               <li><a href="/local#resources" className="text-gray-300 hover:text-sin-orange transition-colors">Resources</a></li>
-              <li><a href="/local#artists" className="text-gray-300 hover:text-sin-orange transition-colors">Featured Artists</a></li>
+              {/* <li><a href="/local#artists" className="text-gray-300 hover:text-sin-orange transition-colors">Featured Artists</a></li> */}
             </ul>
           </div>
 
