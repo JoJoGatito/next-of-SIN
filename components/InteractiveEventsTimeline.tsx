@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Calendar, Clock, MapPin } from 'lucide-react'
-
+import OrbField from '@/components/OrbField'
 interface TimelineEvent {
   id: string
   title?: string
@@ -43,11 +43,7 @@ export default function InteractiveEventsTimeline({ events }: InteractiveEventsT
 
   return (
     <section className="relative overflow-hidden py-16 px-4 md:px-8 lg:px-16 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
-      <div className="absolute inset-0" aria-hidden="true">
-        <div className="absolute top-0 -left-4 w-72 h-72 bg-white dark:bg-sin-orange/20 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-10 dark:opacity-30 animate-float"></div>
-        <div className="absolute top-0 -right-4 w-72 h-72 bg-white dark:bg-sin-yellow/20 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-10 dark:opacity-30 animate-float-delayed"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-white dark:bg-sin-orange/20 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-10 dark:opacity-30 animate-float-slow"></div>
-      </div>
+      <OrbField seed="events" count={3} />
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
