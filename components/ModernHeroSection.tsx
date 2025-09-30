@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 export default function ModernHeroSection() {
   return (
-    <section className="relative w-full bg-gray-100 dark:bg-gray-900">
+    <section className="relative w-full bg-gray-100 dark:bg-transparent">
       {/* Container - no fixed height on mobile; 16:9 on desktop */}
       <div className="relative w-full sm:aspect-video">
         {/* Desktop Light mode image */}

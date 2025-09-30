@@ -21,7 +21,7 @@ const sponsors: Sponsor[] = [
 
 export default function Sponsors() {
   return (
-    <section className="relative overflow-hidden py-8 sm:py-10 px-4 md:px-8 lg:px-16 bg-transparent dark:bg-gradient-to-b dark:from-gray-800 dark:to-gray-900">
+    <section className="relative overflow-hidden py-8 sm:py-10 px-4 md:px-8 lg:px-16 bg-transparent dark:bg-transparent">
       <OrbField seed="sponsors" count={3} />
       <div className="max-w-5xl mx-auto relative z-10">
         <motion.div
@@ -96,7 +96,7 @@ export default function Sponsors() {
               Interested in becoming a sponsor?
             </p>
             <a
-              href="/donate"
+              href="/#donate"
               className="inline-block bg-sin-orange text-white px-4 sm:px-6 py-1.5 sm:py-2 rounded-lg font-semibold hover:bg-opacity-90 transition-all hover:scale-105 hover:shadow-xl text-xs sm:text-sm"
             >
               Learn More

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Palette, Calendar, Users, Globe } from 'lucide-react'
+import RainbowDivider from '@/components/RainbowDivider'
 
 export const metadata: Metadata = {
   title: 'Hue House | BIPOC Community Program | SIN',
@@ -36,6 +37,8 @@ export default function HueHousePage() {
             Hue House Community Image Placeholder
           </div>
         </div>
+
+        <RainbowDivider marginClassName="my-8" />
 
         <div className="prose dark:prose-invert max-w-none mb-12">
           <h2 className="text-2xl font-bold mb-4">About Hue House</h2>
@@ -86,6 +89,8 @@ export default function HueHousePage() {
               <p className="text-sm">Consistent opportunities for connection and community</p>
             </div>
           </div>
+
+          <RainbowDivider marginClassName="my-8" />
 
           <h2 className="text-2xl font-bold my-4">Join Hue House</h2>
           <p>

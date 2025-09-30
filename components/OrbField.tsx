@@ -43,9 +43,9 @@ export default function OrbField({ count = 3, seed = 'orbfield', className = '' 
   const rng = seededRng(seed);
 
   const colorClasses = [
-    'bg-white dark:bg-sin-orange/20',
-    'bg-white dark:bg-sin-yellow/20',
-    'bg-white dark:bg-sin-red/20'
+    'bg-white dark:bg-white/10',
+    'bg-white dark:bg-white/10',
+    'bg-white dark:bg-white/10'
   ];
 
   const animationClasses = [
@@ -70,7 +70,7 @@ export default function OrbField({ count = 3, seed = 'orbfield', className = '' 
     return (
       <div
         key={i}
-        className={`absolute rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-10 dark:opacity-30 ${color} ${anim}`}
+        className={`absolute rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-xl opacity-10 dark:opacity-10 ${color} ${anim}`}
         style={{ top: `${topPct}%`, left: `${leftPct}%`, width: size, height: size }}
         aria-hidden="true"
       />

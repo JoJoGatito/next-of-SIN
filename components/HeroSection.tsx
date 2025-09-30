@@ -1,6 +1,6 @@
 export default function HeroSection() {
   return (
-    <section className="relative bg-gradient-to-br from-sin-orange to-sin-yellow py-24 px-4 md:px-8 lg:px-16">
+    <section className="relative bg-gradient-to-br from-sin-orange to-sin-yellow dark:bg-none dark:bg-background py-24 px-4 md:px-8 lg:px-16">
       <div className="max-w-6xl mx-auto text-center text-white">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
           Sunstone Inclusivity Network

@@ -62,7 +62,7 @@ export default function RootLayout({
           <ChromeGuard>
             <Navigation />
           </ChromeGuard>
-          <main id="main" className="flex-grow pb-16 md:pb-0">
+          <main id="main" className="flex-grow pb-16 md:pb-0 bg-gradient-to-b from-sin-yellow/10 via-sin-orange/10 to-sin-yellow/10 dark:bg-transparent">
             {children}
           </main>
           <ChromeGuard>

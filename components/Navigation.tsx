@@ -11,7 +11,7 @@ const navLinks = [
   { href: '/', label: 'HOME', icon: Home },
   { href: '/about', label: 'ABOUT', icon: Users },
   { href: '/events', label: 'EVENTS', icon: Calendar },
-  { href: '/donate', label: 'DONATE', icon: Heart },
+  { href: '/#donate', label: 'DONATE', icon: Heart },
   { href: '/local', label: 'LOCAL', icon: MapPin },
 ]
 

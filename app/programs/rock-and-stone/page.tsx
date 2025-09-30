@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Heart, Calendar, Mountain, Users } from 'lucide-react'
+import RainbowDivider from '@/components/RainbowDivider'
 
 export const metadata: Metadata = {
   title: 'Rock & Stone | Inclusive Outdoor Group | SIN',
@@ -36,6 +37,8 @@ export default function RockAndStonePage() {
             Outdoor Group Image Placeholder
           </div>
         </div>
+
+        <RainbowDivider marginClassName="my-8" />
 
         <div className="prose dark:prose-invert max-w-none mb-12">
           <h2 className="text-2xl font-bold mb-4">About Rock & Stone</h2>
@@ -80,6 +83,8 @@ export default function RockAndStonePage() {
               <p className="text-sm">Consistent opportunities to connect with nature</p>
             </div>
           </div>
+
+          <RainbowDivider marginClassName="my-8" />
 
           <h2 className="text-2xl font-bold my-4">Join Rock & Stone</h2>
           <p>

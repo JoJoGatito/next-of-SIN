@@ -7,6 +7,7 @@ import { ExternalLink } from '@/components/ExternalLink'
 import { MessageCircle } from 'lucide-react'
 import { client } from '@/lib/sanity.client'
 import { upcomingEventsQuery } from '@/lib/queries'
+import DonateButton from '@/components/DonateButton'
 
 export const revalidate = 60
 
@@ -48,7 +49,7 @@ export default async function Home() {
     <div className="min-h-screen relative">
       <ModernHeroSection />
       
-      <div className="relative bg-gradient-to-b from-sin-yellow/10 via-sin-orange/10 to-sin-yellow/10">
+      <div className="relative bg-transparent">
       
       {/* Rainbow Divider */}
       <div
@@ -60,7 +61,7 @@ export default async function Home() {
         role="presentation"
       />
       
-      <section className="relative overflow-hidden dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900">
+      <section className="relative overflow-hidden dark:bg-transparent">
         <OrbField seed="programs" count={3} />
         <div className="relative z-10">
           <ModernProgramCards />
@@ -78,7 +79,7 @@ export default async function Home() {
       />
       
       {/* Discord Invite Section */}
-      <section className="py-12 sm:py-16 px-4 md:px-8 lg:px-16 bg-transparent dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 text-foreground dark:text-white relative overflow-hidden">
+      <section className="py-12 sm:py-16 px-4 md:px-8 lg:px-16 bg-transparent dark:bg-transparent text-foreground dark:text-white relative overflow-hidden">
         <OrbField seed="discord" count={3} />
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">
@@ -122,7 +123,7 @@ export default async function Home() {
         role="presentation"
       />
 
-      <section className="py-12 sm:py-16 px-4 md:px-8 lg:px-16 bg-transparent dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 text-foreground dark:text-white relative overflow-hidden">
+      <section className="py-12 sm:py-16 px-4 md:px-8 lg:px-16 bg-transparent dark:bg-transparent text-foreground dark:text-white relative overflow-hidden">
         {/* Background pattern for visual interest */}
         <OrbField seed="donate" count={3} />
         
@@ -136,13 +137,8 @@ export default async function Home() {
           <p className="text-sm sm:text-base mb-6 sm:mb-8 px-4 sm:px-0 text-foreground/80 dark:text-gray-200">
             As a 501(c)(3) nonprofit, your contribution is tax-deductible and directly supports our programs for queer, disabled, and BIPOC communities.
           </p>
-          <div className="flex justify-center px-4 sm:px-0">
-            <a
-              href="/donate"
-              className="bg-white dark:bg-sin-orange text-sin-orange dark:text-white px-8 sm:px-10 py-3 sm:py-4 rounded-lg font-semibold hover:bg-white/95 dark:hover:bg-sin-yellow dark:hover:text-gray-900 transition-all hover:scale-105 hover:shadow-xl text-base sm:text-lg inline-block border-2 border-transparent hover:border-white/20 dark:hover:border-white/20"
-            >
-              Make a Donation
-            </a>
+          <div id="donate" className="flex justify-center px-4 sm:px-0">
+            <DonateButton />
           </div>
         </div>
       </section>

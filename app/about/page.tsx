@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { Users, Heart, Target, Sparkles, Award, Globe, Zap, Shield, Rocket } from 'lucide-react'
 import { AccessibleGradient } from '@/components/AccessibleGradient'
+import RainbowDivider from '@/components/RainbowDivider'
 import { motion } from 'framer-motion'
 import { 
   AnimatedSection, 
@@ -76,7 +77,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen overflow-x-hidden">
       {/* Ultra-Clean Hero Section - Seamless Design */}
-      <section className="relative flex items-center justify-center bg-white dark:bg-gray-900 py-24 sm:py-32">
+      <section className="relative flex items-center justify-center bg-transparent dark:bg-transparent py-24 sm:py-32">
         {/* No gradients for completely seamless design */}
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
@@ -132,8 +133,10 @@ export default function AboutPage() {
         </div>
       </section>
 
+      <RainbowDivider marginClassName="my-8" />
+
       {/* Mission Section with Animations - Seamless continuation */}
-      <section className="py-0 pb-16 px-4 md:px-8 lg:px-16 bg-white dark:bg-gray-900">
+      <section className="py-0 pb-16 px-4 md:px-8 lg:px-16 bg-transparent dark:bg-transparent">
         <div className="max-w-4xl mx-auto">
           <AnimatedSection className="prose dark:prose-invert max-w-none">
             <h2 className="text-3xl font-bold mb-6">
@@ -188,8 +191,9 @@ export default function AboutPage() {
         </div>
       </section>
 
+      <RainbowDivider marginClassName="my-12" />
       {/* What Sets Us Apart Section with Interactive Cards */}
-      <section className="py-16 px-4 md:px-8 lg:px-16 bg-gray-50 dark:bg-gray-950 relative">
+      <section className="py-16 px-4 md:px-8 lg:px-16 bg-transparent dark:bg-transparent relative">
         <div className="max-w-4xl mx-auto">
           <AnimatedSection>
             <h2 className="text-3xl font-bold mb-8">
@@ -402,7 +406,7 @@ export default function AboutPage() {
       </section>
 
       {/* Timeline Section */}
-      <section className="py-16 px-4 md:px-8 lg:px-16 bg-white dark:bg-gray-900">
+      <section className="py-16 px-4 md:px-8 lg:px-16 bg-transparent dark:bg-transparent">
         <div className="max-w-6xl mx-auto">
           <AnimatedSection>
             <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
@@ -467,7 +471,7 @@ export default function AboutPage() {
       </section>
 
       {/* Board Members Section - Subtle Separation */}
-      <section className="py-16 px-4 md:px-8 lg:px-16 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white relative overflow-hidden">
+      <section className="py-16 px-4 md:px-8 lg:px-16 bg-transparent dark:bg-transparent text-gray-900 dark:text-white relative overflow-hidden">
         {/* Subtle background elements */}
         <FloatingShape className="top-0 left-0" size={200} color="yellow" delay={0} />
         <FloatingShape className="bottom-0 right-0" size={180} color="orange" delay={3} />

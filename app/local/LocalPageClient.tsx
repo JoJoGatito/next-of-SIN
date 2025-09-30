@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import RainbowDivider from '@/components/RainbowDivider'
 import { MapPin, Calendar, Users, BookOpen, ArrowRight, Clock, Tag, ExternalLink, Phone, Mail, MapPin as MapPinIcon } from 'lucide-react'
 
 interface LocalEvent {
@@ -102,6 +103,8 @@ export default function LocalPageClient({ localEvents, resources }: LocalPageCli
           </p>
         </div>
 
+        <RainbowDivider marginClassName="my-8" />
+
         {/* Tab Navigation */}
         <div className="flex justify-center mb-8">
           <div className="bg-muted rounded-full p-1 inline-flex">
@@ -140,6 +143,8 @@ export default function LocalPageClient({ localEvents, resources }: LocalPageCli
             </button>
           </div>
         </div>
+
+        <RainbowDivider marginClassName="my-8" />
 
         {/* Content Sections */}
         <div className="space-y-6">
