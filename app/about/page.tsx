@@ -470,6 +470,7 @@ export default function AboutPage() {
         </div>
       </section>
 
+<RainbowDivider marginClassName="my-12" />
       {/* Board Members Section - Subtle Separation */}
       <section className="py-16 px-4 md:px-8 lg:px-16 bg-transparent dark:bg-transparent text-gray-900 dark:text-white relative overflow-hidden">
         {/* Subtle background elements */}

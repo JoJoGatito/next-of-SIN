@@ -14,7 +14,7 @@ const sponsors: Sponsor[] = [
   {
     name: 'SCEA',
     logo: '/assets/images/sponsors/SCEA.webp',
-    url: '#' // Update with actual URL if available
+    url: 'https://www.socoequality.org/'
   },
   // Add more sponsors here as needed
 ]

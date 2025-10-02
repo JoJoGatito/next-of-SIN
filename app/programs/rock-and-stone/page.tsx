@@ -3,6 +3,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Heart, Calendar, Mountain, Users } from 'lucide-react'
 import RainbowDivider from '@/components/RainbowDivider'
+import GalleryBento from '@/components/GalleryBento'
+import { getProgramGalleryBySlug } from '@/lib/queries'
 
 export const metadata: Metadata = {
   title: 'Rock & Stone | Inclusive Outdoor Group | SIN',
@@ -18,7 +20,9 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RockAndStonePage() {
+export default async function RockAndStonePage() {
+  // Fetch gallery data from Sanity with caching
+  const gallery = await getProgramGalleryBySlug('rock-and-stone')
   return (
     <div className="min-h-screen py-16 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
@@ -85,7 +89,19 @@ export default function RockAndStonePage() {
           </div>
 
           <RainbowDivider marginClassName="my-8" />
+        </div>
 
+        <section aria-labelledby="gallery" className="mt-12">
+          <h2 id="gallery" className="text-2xl font-bold mb-4">Photo Gallery</h2>
+          <GalleryBento gallery={gallery} />
+          <p className="text-sm text-foreground/70 mt-3">
+            More photos coming soon. See upcoming outdoor activities and events on our{' '}
+            <Link href="/events" className="text-sin-yellow underline-offset-2 hover:underline">Events</Link> page.
+          </p>
+        </section>
+        <RainbowDivider marginClassName="my-12" />
+
+        <div className="prose dark:prose-invert max-w-none mb-12">
           <h2 className="text-2xl font-bold my-4">Join Rock & Stone</h2>
           <p>
             Whether you&apos;re an experienced hiker or have never spent much time outdoors, Rock & Stone 

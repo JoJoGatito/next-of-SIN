@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Rainbow, Heart, Accessibility, Utensils, Palette, ChevronDown, Calendar } from 'lucide-react'
+import { Rainbow, Heart, Accessibility, Utensils, Palette, ChevronDown } from 'lucide-react'
 import { AccessibleGradient } from './AccessibleGradient'
 
 const programs = [
@@ -117,13 +117,7 @@ export default function ModernProgramCards() {
                     {/* Compact view - always visible */}
                     <div className="p-4">
                       <div className="flex items-start justify-between mb-2">
-                        <div className="flex items-center space-x-3">
-                          <div 
-                            className={`p-2 rounded-lg bg-gradient-to-br ${program.color} bg-opacity-10`}
-                            aria-hidden="true"
-                          >
-                            <program.icon className="w-6 h-6 text-sin-orange" aria-hidden="true" />
-                          </div>
+                        <div className="flex items-center">
                           <div className="flex-1">
                             <h3 className="font-bold text-lg text-foreground leading-tight">
                               {program.title}
@@ -156,10 +150,9 @@ export default function ModernProgramCards() {
                         {/* Meeting frequency */}
                         {program.meetingFrequency && (
                           <div className="flex flex-wrap gap-3">
-                            <div 
+                            <div
                               className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-sin-orange/10 to-sin-yellow/10 rounded-full"
                             >
-                              <Calendar className="w-4 h-4 text-sin-orange" />
                               <span className="text-sm font-medium text-foreground">{program.meetingFrequency}</span>
                             </div>
                           </div>
@@ -202,13 +195,7 @@ export default function ModernProgramCards() {
           <div className="hidden lg:block transition-all duration-500 ease-in-out">
             <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-xl border border-border/50 shadow-lg p-6 mx-auto max-w-4xl">
               {/* Header */}
-              <div className="flex items-center space-x-4 mb-6">
-                <div 
-                  className={`p-3 rounded-lg bg-gradient-to-br ${selectedProgram.color} bg-opacity-10`}
-                  aria-hidden="true"
-                >
-                  <selectedProgram.icon className="w-8 h-8 text-sin-orange" aria-hidden="true" />
-                </div>
+              <div className="mb-6">
                 <div>
                   <h3 className="text-2xl font-bold text-foreground">
                     {selectedProgram.title}
@@ -230,10 +217,9 @@ export default function ModernProgramCards() {
                 {/* Meeting frequency */}
                 {selectedProgram.meetingFrequency && (
                   <div className="flex flex-wrap gap-3">
-                    <div 
+                    <div
                       className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-sin-orange/10 to-sin-yellow/10 rounded-full"
                     >
-                      <Calendar className="w-5 h-5 text-sin-orange" />
                       <span className="text-base font-medium text-foreground">{selectedProgram.meetingFrequency}</span>
                     </div>
                   </div>

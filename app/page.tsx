@@ -91,11 +91,19 @@ export default async function Home() {
           <div className="flex justify-center px-4 sm:px-0">
             <ExternalLink
               href="https://discord.gg/5XeapVWHVv"
-              className="bg-white text-blue-700 px-8 sm:px-10 py-3 sm:py-4 rounded-lg font-semibold hover:bg-white/95 transition-all hover:scale-105 hover:shadow-xl text-base sm:text-lg inline-flex items-center gap-2 border-2 border-transparent hover:border-white/20"
+              className="group bg-white text-blue-700 p-4 sm:p-6 rounded-2xl font-semibold transition-all hover:bg-white/95 hover:scale-110 hover:shadow-2xl inline-flex items-center justify-center gap-3 border-2 border-transparent hover:border-white/20 ring-2 ring-indigo-500/10 hover:ring-4 hover:ring-indigo-400/30 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-400/50 "
+              showIcon={false}
               ariaLabel="Join our Discord (opens in new tab)"
             >
-              <MessageCircle className="w-5 h-5" />
-              Join our Discord
+              <img
+                src="/assets/images/icons/discord-pride-icon.png"
+                alt="Join Discord"
+                className="w-16 h-16 sm:w-20 sm:h-20 select-none"
+              />
+              <span className="hidden sm:inline-flex items-center gap-1">
+                <span>Join Discord</span>
+                <span aria-hidden="true" className="inline-block transition-transform duration-300 group-hover:translate-x-0.5">→</span>
+              </span>
             </ExternalLink>
           </div>
         </div>
