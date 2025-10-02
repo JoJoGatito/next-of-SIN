@@ -5,13 +5,20 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useTheme } from './ThemeProvider'
-import { Sun, Moon, Home, Users, Heart, Calendar, MapPin } from 'lucide-react'
+import { Sun, Moon, Home, Users, Heart, Calendar, MapPin, BookOpen } from 'lucide-react'
 
 const navLinks = [
   { href: '/', label: 'HOME', icon: Home },
   { href: '/about', label: 'ABOUT', icon: Users },
+  { href: '/programs', label: 'PROGRAMS', icon: BookOpen },
   { href: '/events', label: 'EVENTS', icon: Calendar },
   { href: '/local', label: 'LOCAL', icon: MapPin },
+]
+ 
+const programPages = [
+  { href: '/programs/sunstone-youth-group', label: 'Sunstone Youth Group' },
+  { href: '/programs/rock-and-stone', label: 'Rock & Stone' },
+  { href: '/programs/hue-house', label: 'Hue House' },
 ]
 
 export default function Navigation() {
@@ -21,6 +28,8 @@ export default function Navigation() {
   const [activeLink, setActiveLink] = useState('')
   const [sliderPosition, setSliderPosition] = useState(0)
   const [isDragging, setIsDragging] = useState(false)
+  const [programsOpen, setProgramsOpen] = useState(false)
+  const [mobileProgramsOpen, setMobileProgramsOpen] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
   const { theme, setTheme, isReady } = useTheme()
@@ -79,6 +88,23 @@ export default function Navigation() {
     }
   }, [pathname])
 
+  // Handle escape key to close dropdown
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && programsOpen) {
+        setProgramsOpen(false)
+      }
+    }
+
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [programsOpen])
+
+  // Instrumentation: log programsOpen transitions
+  useEffect(() => {
+    console.log('[Nav] programsOpen changed:', programsOpen)
+  }, [programsOpen])
+
   // Determine if nav should be expanded (either not collapsed, or collapsed but hovered)
   const isExpanded = !isCollapsed || isHovered
 
@@ -92,10 +118,10 @@ export default function Navigation() {
             floating-nav relative flex items-center
             ${isScrolled ? 'nav-scrolled' : ''}
             ${isCollapsed && !isHovered ? 'nav-collapsed px-1 py-1' : 'px-2 py-2'}
-            transition-all duration-500 ease-in-out overflow-hidden
+            transition-all duration-500 ease-in-out ${programsOpen ? 'overflow-visible' : 'overflow-hidden'}
           `}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+          onMouseEnter={() => { console.log('[Nav] wrapper mouseenter'); setIsHovered(true) }}
+          onMouseLeave={() => { console.log('[Nav] wrapper mouseleave'); setIsHovered(false) }}
         >
           {/* Logo - Always visible */}
           <Link 
@@ -115,7 +141,7 @@ export default function Navigation() {
 
           {/* Navigation elements - hidden when collapsed */}
           <div className={`
-            nav-collapsible-content flex items-center gap-2 overflow-hidden
+            nav-collapsible-content flex items-center gap-2 ${programsOpen ? 'overflow-visible' : 'overflow-hidden'}
             transition-all duration-500 ease-in-out
             ${isExpanded ? 'max-w-[600px] opacity-100 ml-2' : 'max-w-0 opacity-0 ml-0'}
           `}>
@@ -123,22 +149,78 @@ export default function Navigation() {
 
             {/* Navigation Links */}
             <div className="flex items-center gap-1">
-              {navLinks.slice(1).map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`
-                    nav-link relative px-5 py-2.5 rounded-full font-medium text-sm tracking-wide
-                    transition-all duration-300 overflow-hidden
-                    ${activeLink === link.href ? 'nav-link-active' : ''}
-                  `}
-                  onMouseEnter={() => setActiveLink(link.href)}
-                  onMouseLeave={() => setActiveLink(pathname)}
-                >
-                  <span className="relative z-10">{link.label}</span>
-                  <div className="nav-link-bg" />
-                </Link>
-              ))}
+              {navLinks.slice(1).map((link) => {
+                const isPrograms = link.href === '/programs'
+                if (isPrograms) {
+                  return (
+                    <div
+                      key={link.href}
+                      className="relative"
+                      onMouseEnter={() => { console.log('[Nav] programs container mouseenter'); setActiveLink(link.href); setProgramsOpen(true) }}
+                      onMouseLeave={() => { console.log('[Nav] programs container mouseleave'); setActiveLink(pathname); setProgramsOpen(false) }}
+                    >
+                      <button
+                        onClick={() => { console.log('[Nav] programs button click toggle', { from: programsOpen, to: !programsOpen }); setProgramsOpen(!programsOpen) }}
+                        className={`
+                          nav-link relative px-5 py-2.5 rounded-full font-medium text-sm tracking-wide
+                          transition-all duration-300 overflow-hidden
+                          ${activeLink === link.href ? 'nav-link-active' : ''}
+                        `}
+                        aria-haspopup="menu"
+                        aria-expanded={programsOpen}
+                        aria-controls="programs-menu"
+                      >
+                        <span className="relative z-10">{link.label}</span>
+                        <div className="nav-link-bg" />
+                      </button>
+
+                      <div
+                        id="programs-menu"
+                        className={`
+                          absolute left-0 top-full mt-2 w-64 z-[60]
+                          bg-white dark:bg-gray-900 border border-border/50 rounded-xl shadow-lg overflow-hidden
+                          transition-all duration-200
+                          ${programsOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}
+                        `}
+                        role="menu"
+                        aria-label="Programs menu"
+                        onMouseEnter={() => console.log('[Nav] programs menu mouseenter')}
+                        onMouseLeave={() => console.log('[Nav] programs menu mouseleave')}
+                      >
+                        <div className="py-2">
+                          {programPages.map((p) => (
+                            <Link
+                              key={p.href}
+                              href={p.href}
+                              className="block px-4 py-2.5 text-sm font-medium text-foreground hover:bg-sin-orange/10"
+                              onClick={() => setProgramsOpen(false)}
+                              role="menuitem"
+                            >
+                              {p.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )
+                }
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`
+                      nav-link relative px-5 py-2.5 rounded-full font-medium text-sm tracking-wide
+                      transition-all duration-300 overflow-hidden
+                      ${activeLink === link.href ? 'nav-link-active' : ''}
+                    `}
+                    onMouseEnter={() => setActiveLink(link.href)}
+                    onMouseLeave={() => setActiveLink(pathname)}
+                  >
+                    <span className="relative z-10">{link.label}</span>
+                    <div className="nav-link-bg" />
+                  </Link>
+                )
+              })}
             </div>
 
             <div className="h-6 w-px bg-gray-300 dark:bg-gray-600 mx-1" />
@@ -229,6 +311,13 @@ export default function Navigation() {
                     key={link.href}
                     onClick={(e) => {
                       e.stopPropagation()
+                      const isPrograms = link.href === '/programs'
+
+                      if (isPrograms) {
+                        setMobileProgramsOpen(true)
+                        return
+                      }
+
                       setSliderPosition(index)
                       router.push(link.href)
                     }}
@@ -264,6 +353,46 @@ export default function Navigation() {
           </button>
         </div>
       </nav>
+
+      {/* Mobile Programs Bottom Sheet */}
+      {mobileProgramsOpen && (
+        <div className="md:hidden fixed inset-0 z-[60]">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setMobileProgramsOpen(false)}
+          />
+
+          {/* Bottom Sheet */}
+          <div className="absolute bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-border rounded-t-3xl shadow-2xl">
+            {/* Handle bar */}
+            <div className="flex justify-center py-3">
+              <div className="w-10 h-1 bg-gray-300 dark:bg-gray-600 rounded-full" />
+            </div>
+
+            {/* Header */}
+            <div className="px-6 pb-4">
+              <h3 className="text-lg font-semibold text-center text-foreground">Programs</h3>
+            </div>
+
+            {/* Program Links */}
+            <div className="px-6 pb-6">
+              <div className="space-y-1">
+                {programPages.map((program) => (
+                  <Link
+                    key={program.href}
+                    href={program.href}
+                    className="block px-4 py-3 text-sm font-medium text-foreground hover:bg-sin-orange/10 rounded-lg transition-colors"
+                    onClick={() => setMobileProgramsOpen(false)}
+                  >
+                    {program.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }
