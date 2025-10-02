@@ -110,7 +110,6 @@ export const upcomingLocalEventsQuery = groq`
 export const programGalleryBySlugQuery = groq`
   *[_type == "programGallery" && programSlug == $slug][0] {
     _id,
-    title,
     images[] {
       image {
         asset->{
@@ -152,7 +151,6 @@ export interface SanityGalleryImage {
 
 export interface SanityProgramGallery {
   _id: string
-  title: string
   images: SanityGalleryImage[]
 }
 

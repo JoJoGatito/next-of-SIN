@@ -6,12 +6,6 @@ export const programGallery = defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'title',
-      title: 'Gallery Title',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: 'programSlug',
       title: 'Program Slug',
       type: 'string',
@@ -78,8 +72,7 @@ export const programGallery = defineType({
   ],
   preview: {
     select: {
-      title: 'title',
-      subtitle: 'programSlug',
+      title: 'programSlug',
     },
   },
 })

@@ -133,9 +133,6 @@ export default function GalleryBento({
   return (
     <div className={`w-full ${className}`}>
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-          {gallery.title}
-        </h2>
         <p className="text-gray-600 dark:text-gray-300">
           {gallery.images.length} image{gallery.images.length !== 1 ? 's' : ''}
         </p>
@@ -144,7 +141,7 @@ export default function GalleryBento({
       <div
         className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-fr"
         role="region"
-        aria-label={`${gallery.title} gallery`}
+        aria-label="Program photo gallery"
       >
         {gallery.images.map((galleryImage, index) => (
           <GalleryImage
