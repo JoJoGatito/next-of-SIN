@@ -91,7 +91,7 @@ export default async function SunstoneYouthGroupPage() {
             <div className="flex items-start gap-3 p-4 rounded-lg border border-orange-200/60 dark:border-orange-900/40 bg-orange-50/50 dark:bg-orange-950/20">
               <Users className="w-5 h-5 text-sin-orange mt-1" aria-hidden="true" />
               <div>
-                <p className="font-medium">Who it's for</p>
+                <p className="font-medium">{"Who it's for"}</p>
                 <p className="text-foreground/80">LGBTQ+ youth and allies in Southern Colorado.</p>
               </div>
             </div>

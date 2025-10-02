@@ -36,7 +36,7 @@ const GalleryEmpty = ({ className = '' }: { className?: string }) => (
       No images in gallery
     </div>
     <p className="text-sm text-gray-400 dark:text-gray-500">
-      Images will appear here once they're added to this program gallery.
+      {"Images will appear here once they're added to this program gallery."}
     </p>
   </div>
 )
@@ -137,7 +137,7 @@ export default function GalleryBento({
           {gallery.title}
         </h2>
         <p className="text-gray-600 dark:text-gray-300">
-          {gallery.images.length} image{gallery.images.length !== 1 ? &apos;s : ''}
+          {gallery.images.length} image{gallery.images.length !== 1 ? 's' : ''}
         </p>
       </div>
 
