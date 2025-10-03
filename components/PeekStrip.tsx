@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 interface PeekStripProps {
   isOpen: boolean
@@ -17,6 +18,25 @@ const programs = [
 
 export default function PeekStrip({ isOpen, onClose, position }: PeekStripProps) {
   const [focusedIndex, setFocusedIndex] = useState(0)
+  const router = useRouter()
+  const safeNavigate = useCallback((href: string) => {
+    try {
+      const fallback = window.setTimeout(() => {
+        if (window.location.pathname !== href) {
+          window.location.assign(href)
+        }
+      }, 700)
+      router.push(href)
+      // If path changed quickly, cancel the fallback
+      window.setTimeout(() => {
+        if (window.location.pathname === href) {
+          clearTimeout(fallback)
+        }
+      }, 150)
+    } catch (_err) {
+      window.location.assign(href)
+    }
+  }, [router])
   const containerRef = useRef<HTMLDivElement>(null)
   const autoCloseTimeoutRef = useRef<number | null>(null)
   const chipsRefs = useRef<(HTMLAnchorElement | null)[]>([])
@@ -122,7 +142,7 @@ export default function PeekStrip({ isOpen, onClose, position }: PeekStripProps)
   // Position-based styling
   const containerClasses = position === 'desktop'
     ? 'absolute bottom-full left-0 w-64 mb-2'
-    : 'absolute bottom-full left-0 right-0 mx-4 mb-2'
+    : 'fixed left-0 right-0 bottom-20 mx-4 z-[70] pointer-events-auto'
 
   if (!isOpen) return null
 
@@ -156,7 +176,7 @@ export default function PeekStrip({ isOpen, onClose, position }: PeekStripProps)
                 key={program.href}
                 ref={(el) => { chipsRefs.current[index] = el }}
                 href={program.href}
-                onClick={handleProgramSelect}
+                onClick={(e) => { e.preventDefault(); handleProgramSelect(); safeNavigate(program.href) }}
                 onMouseEnter={handleInteraction}
                 onFocus={handleInteraction}
                 className={`

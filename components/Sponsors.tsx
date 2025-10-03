@@ -11,13 +11,17 @@ interface Sponsor {
 }
 
 const sponsors: Sponsor[] = [
-  {
-    name: 'SCEA',
-    logo: '/assets/images/sponsors/SCEA.webp',
-    url: 'https://www.socoequality.org/'
-  },
-  // Add more sponsors here as needed
-]
+   {
+     name: 'SCEA',
+     logo: '/assets/images/sponsors/SCEA.webp',
+     url: 'https://www.socoequality.org/'
+   },
+   {
+     name: 'PMG RANTE',
+     logo: '/assets/images/sponsors/pmgrantte.webp',
+     url: 'https://rougesupportnetwork.org/pmgrante'
+   }
+ ]
 
 export default function Sponsors() {
   return (

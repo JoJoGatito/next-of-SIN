@@ -55,34 +55,43 @@ export default function EventsClient({ events }: EventsClientProps) {
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
-  // Update URL when view mode changes
+  // Update URL when view mode changes (idempotent; avoid searchParams in deps to prevent loops)
   useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString())
+    const currentSearch = typeof window !== 'undefined' ? window.location.search : ''
+    const params = new URLSearchParams(currentSearch)
+
     if (viewMode === 'list') {
+      // Clear 'view' and 'd' when switching to list
       params.delete('view')
+      params.delete('d')
+      // Only clear state if previously set to avoid redundant updates
+      setSelectedDay(prev => (prev ? '' : prev))
     } else {
       params.set('view', viewMode)
     }
-    // Remove selected day when switching to list view
-    if (viewMode === 'list') {
-      params.delete('d')
-      setSelectedDay('')
+
+    const nextQuery = params.toString()
+    const nextUrl = nextQuery ? `?${nextQuery}` : ''
+
+    if (nextUrl !== currentSearch) {
+      router.replace(nextUrl, { scroll: false })
     }
+  }, [viewMode, router])
 
-    const newUrl = params.toString() ? `?${params.toString()}` : ''
-    router.replace(newUrl, { scroll: false })
-  }, [viewMode, router, searchParams])
-
-  // Update URL when selected day changes
+  // Update URL when selected day changes (idempotent)
   useEffect(() => {
     if (!selectedDay) return
 
-    const params = new URLSearchParams(searchParams.toString())
-    params.set('d', selectedDay)
+    const currentSearch = typeof window !== 'undefined' ? window.location.search : ''
+    const params = new URLSearchParams(currentSearch)
 
+    // If it's already set to this value, do nothing
+    if (params.get('d') === selectedDay) return
+
+    params.set('d', selectedDay)
     const newUrl = `?${params.toString()}`
     router.replace(newUrl, { scroll: false })
-  }, [selectedDay, router, searchParams])
+  }, [selectedDay, router])
 
   // Handle view mode toggle
   const handleViewToggle = (mode: ViewMode) => {

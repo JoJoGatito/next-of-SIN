@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, createContext, useContext, ReactNode } from 'react'
+import { useEffect, useState, useCallback, createContext, useContext, ReactNode } from 'react'
 
 export type AriaPoliteness = 'polite' | 'assertive' | 'off'
 
@@ -85,7 +85,7 @@ export function AriaAnnounceProvider({ children }: AriaAnnounceProviderProps) {
     role: AriaRole
   }>>([])
 
-  const announce = (text: string, options?: {
+  const announce = useCallback((text: string, options?: {
     politeness?: AriaPoliteness,
     role?: AriaRole,
     clearAfter?: number
@@ -106,9 +106,9 @@ export function AriaAnnounceProvider({ children }: AriaAnnounceProviderProps) {
         setAnnouncements(prev => prev.filter(a => a.id !== id))
       }, options.clearAfter)
     }
-  }
+  }, [])
 
-  const clear = () => setAnnouncements([])
+  const clear = useCallback(() => setAnnouncements([]), [])
 
   return (
     <AriaAnnounceContext.Provider value={{ announce, clear }}>

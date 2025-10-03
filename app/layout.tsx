@@ -76,9 +76,9 @@ export default function RootLayout({
                 {/* Portal mounting point for PeekStrip component */}
                 <div
                   id="peek-strip-portal"
-                  className="fixed inset-0 z-40 pointer-events-none"
+                  className="fixed inset-0 z-[70] pointer-events-none"
                   style={{
-                    zIndex: 40,
+                    zIndex: 70,
                     pointerEvents: 'none'
                   }}
                 />

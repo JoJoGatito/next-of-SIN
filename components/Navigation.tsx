@@ -144,11 +144,26 @@ export default function Navigation() {
   }, [])
 
   useEffect(() => {
-    setActiveLink(pathname)
-    // Set slider position based on current path
-    const currentIndex = navLinks.findIndex(link => link.href === pathname)
-    if (currentIndex !== -1) {
-      setSliderPosition(currentIndex)
+    // Map nested routes to their top-level nav parent for highlighting/slider
+    const resolveNavForPath = (path: string) => {
+      // exact home
+      if (path === '/') return '/'
+      // exact match first
+      const exact = navLinks.find(l => l.href === path)
+      if (exact) return exact.href
+      // nested match: treat /about/*, /programs/*, /events/*, /local/* as their parent
+      const parent = navLinks.find(
+        l => l.href !== '/' && (path === l.href || path.startsWith(`${l.href}/`))
+      )
+      return parent?.href ?? '/'
+    }
+
+    const active = resolveNavForPath(pathname)
+    setActiveLink(active)
+
+    const index = navLinks.findIndex(l => l.href === active)
+    if (index !== -1) {
+      setSliderPosition(index)
     }
   }, [pathname])
 
@@ -183,25 +198,21 @@ export default function Navigation() {
     }
   }, [])
 
-  // Close PeekStrip on scroll
+  // Close PeekStrip on scroll (desktop only to avoid mobile tap causing immediate close)
   useEffect(() => {
     const handleScroll = () => {
-      if (peekOpen) {
-        closePeekStrip()
+      // Only close on desktop
+      if (window.matchMedia && window.matchMedia('(min-width: 768px)').matches) {
+        if (peekOpen) {
+          closePeekStrip()
+        }
       }
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [peekOpen])
+  }, [peekOpen, closePeekStrip])
 
-  // Close PeekStrip when slider moves off Programs
-  useEffect(() => {
-    const currentIndex = Math.round(sliderPosition)
-    if (peekOpen && currentIndex !== 2) { // Programs is at index 2
-      closePeekStrip()
-    }
-  }, [sliderPosition, peekOpen])
 
   // Determine if nav should be expanded (either not collapsed, or hovered, or dropdown open)
   const isExpanded = !isCollapsed || isHovered || programsOpen
@@ -351,56 +362,9 @@ export default function Navigation() {
       {/* Mobile Bottom Navigation with Slider */}
       <nav className="md:hidden fixed bottom-4 left-4 right-4 z-50">
         <div className="mobile-nav-wrapper">
-          <div 
+          <div
             ref={sliderRef}
             className="mobile-nav-slider-container"
-            onTouchStart={(e) => {
-              // Don't check isReady here - allow touch events regardless of theme state
-              e.stopPropagation() // Prevent event from being captured by parent elements
-              setIsDragging(true)
-              startX.current = e.touches[0].clientX
-              currentX.current = sliderPosition
-            }}
-            onTouchMove={(e) => {
-              // Only check if we're dragging and have a valid ref, not theme readiness
-              if (!isDragging || !sliderRef.current) {
-                return
-              }
-              
-              e.stopPropagation()
-              
-              const diff = e.touches[0].clientX - startX.current
-              const containerWidth = sliderRef.current.offsetWidth
-              const itemWidth = containerWidth / navLinks.length
-              const newPosition = currentX.current + (diff / itemWidth)
-              
-              // Clamp between 0 and navLinks.length - 1
-              const clampedPosition = Math.max(0, Math.min(navLinks.length - 1, newPosition))
-              setSliderPosition(clampedPosition)
-            }}
-            onTouchEnd={(e) => {
-              // Only check if we're dragging, not theme readiness
-              if (!isDragging) {
-                return
-              }
-
-              e.stopPropagation()
-              setIsDragging(false)
-
-              // Snap to nearest position
-              const nearestIndex = Math.round(sliderPosition)
-              setSliderPosition(nearestIndex)
-
-              // Check if settled on Programs
-              if (nearestIndex === 2) { // Programs is at index 2 in navLinks array
-                e.preventDefault()
-                openPeekStrip()
-                return
-              }
-
-              // Navigate to the page for other links
-              router.push(navLinks[nearestIndex].href)
-            }}
           >
             {/* Slider Track Background */}
             <div className="mobile-nav-track" />
