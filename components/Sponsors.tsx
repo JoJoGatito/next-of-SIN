@@ -100,10 +100,10 @@ export default function Sponsors() {
               Interested in becoming a sponsor?
             </p>
             <a
-              href="/#donate"
+              href="mailto:info@sunstonein.org"
               className="inline-block bg-sin-orange text-white px-4 sm:px-6 py-1.5 sm:py-2 rounded-lg font-semibold hover:bg-opacity-90 transition-all hover:scale-105 hover:shadow-xl text-xs sm:text-sm"
             >
-              Learn More
+              Contact Us
             </a>
           </div>
         </motion.div>
