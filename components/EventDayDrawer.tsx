@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { X, MapPin, Clock, Users, ExternalLink, Calendar, Tag } from 'lucide-react'
 import { EventDTO } from './CalendarMonth'
+import { useFocusTrap } from './FocusManager'
+import { useAriaAnnounce } from './AriaLiveRegion'
 
 interface EventDayDrawerProps {
   isOpen: boolean
@@ -21,6 +23,10 @@ export default function EventDayDrawer({
 }: EventDayDrawerProps) {
   const drawerRef = useRef<HTMLDivElement>(null)
   const [isMobile, setIsMobile] = useState(false)
+  const { announce } = useAriaAnnounce()
+
+  // Use our focus trap hook
+  const { containerRef } = useFocusTrap(isOpen, onClose)
 
   // Check if mobile on mount and resize
   useEffect(() => {
@@ -33,62 +39,34 @@ export default function EventDayDrawer({
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // Focus trap and keyboard navigation
+  // Announce when drawer opens/closes
   useEffect(() => {
-    if (!isOpen) return
+    if (isOpen) {
+      announce(`Opened events for ${new Date(dayKey).toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+      })}. ${events.length} event${events.length !== 1 ? 's' : ''} scheduled.`, {
+        politeness: 'assertive',
+        clearAfter: 3000
+      })
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose()
-        return
-      }
+      document.body.style.overflow = 'hidden' // Prevent background scroll
 
-      if (event.key === 'Tab') {
-        const focusableElements = drawerRef.current?.querySelectorAll(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        ) as NodeListOf<HTMLElement>
-
-        if (!focusableElements?.length) return
-
-        const firstElement = focusableElements[0]
-        const lastElement = focusableElements[focusableElements.length - 1]
-
-        if (event.shiftKey) {
-          if (document.activeElement === firstElement) {
-            event.preventDefault()
-            lastElement.focus()
-          }
-        } else {
-          if (document.activeElement === lastElement) {
-            event.preventDefault()
-            firstElement.focus()
-          }
-        }
-      }
+      // Focus management is handled by useFocusTrap
+    } else {
+      document.body.style.overflow = ''
+      announce('Events drawer closed', { politeness: 'polite', clearAfter: 1000 })
     }
-
-    // Focus the drawer when it opens
-    const focusTimeout = setTimeout(() => {
-      const closeButton = drawerRef.current?.querySelector('[data-close-button]') as HTMLElement
-      closeButton?.focus()
-    }, 100)
-
-    document.addEventListener('keydown', handleKeyDown)
-    document.body.style.overflow = 'hidden' // Prevent background scroll
 
     return () => {
-      clearTimeout(focusTimeout)
-      document.removeEventListener('keydown', handleKeyDown)
       document.body.style.overflow = ''
     }
-  }, [isOpen, onClose])
+  }, [isOpen, events.length, dayKey, announce])
 
-  // Return focus to the originating element when closed
-  useEffect(() => {
-    if (!isOpen && focusReturnElement) {
-      focusReturnElement.focus()
-    }
-  }, [isOpen, focusReturnElement])
+  // Use the containerRef from useFocusTrap for focus management
+  const focusTrapRef = containerRef
 
   // Don't render if not open
   if (!isOpen) return null
@@ -171,7 +149,7 @@ export default function EventDayDrawer({
 
   return (
     <div
-      ref={drawerRef}
+      ref={focusTrapRef}
       role="dialog"
       aria-modal="true"
       aria-labelledby="drawer-title"

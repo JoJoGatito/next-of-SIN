@@ -1,11 +1,13 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
+import { createPortal } from 'react-dom'
 import { useTheme } from './ThemeProvider'
 import { Sun, Moon, Home, Users, Heart, Calendar, MapPin, BookOpen } from 'lucide-react'
+import PeekStrip from './PeekStrip'
 
 const navLinks = [
   { href: '/', label: 'HOME', icon: Home },
@@ -30,6 +32,7 @@ export default function Navigation() {
   const [isDragging, setIsDragging] = useState(false)
   const [programsOpen, setProgramsOpen] = useState(false)
   const [mobileProgramsOpen, setMobileProgramsOpen] = useState(false)
+  const [peekOpen, setPeekOpen] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
   const { theme, setTheme, isReady } = useTheme()
@@ -42,6 +45,59 @@ export default function Navigation() {
   const startX = useRef(0)
   const currentX = useRef(0)
   const lastScrollY = useRef(0)
+  const peekTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  // Hover-intent management for Programs dropdown
+  const closeProgramsTimeout = useRef<number | null>(null)
+
+  const openPrograms = () => {
+    if (closeProgramsTimeout.current != null) {
+      window.clearTimeout(closeProgramsTimeout.current)
+      closeProgramsTimeout.current = null
+    }
+    setProgramsOpen(true)
+  }
+
+  const scheduleClosePrograms = (delay = 200) => {
+    if (closeProgramsTimeout.current != null) {
+      window.clearTimeout(closeProgramsTimeout.current)
+    }
+    closeProgramsTimeout.current = window.setTimeout(() => {
+      setProgramsOpen(false)
+    }, delay)
+  }
+
+  // Cleanup any pending timeouts on unmount
+  useEffect(() => {
+    return () => {
+      if (closeProgramsTimeout.current != null) {
+        window.clearTimeout(closeProgramsTimeout.current)
+      }
+      if (peekTimeoutRef.current) {
+        clearTimeout(peekTimeoutRef.current)
+      }
+    }
+  }, [])
+
+  // PeekStrip handlers
+  const closePeekStrip = useCallback(() => {
+    setPeekOpen(false)
+    if (peekTimeoutRef.current) {
+      clearTimeout(peekTimeoutRef.current)
+      peekTimeoutRef.current = null
+    }
+  }, [])
+
+  const openPeekStrip = useCallback(() => {
+    setPeekOpen(true)
+    if (peekTimeoutRef.current) {
+      clearTimeout(peekTimeoutRef.current)
+    }
+    // 3 second auto-retract
+    peekTimeoutRef.current = setTimeout(() => {
+      setPeekOpen(false)
+    }, 3000)
+  }, [])
 
   const toggleTheme = () => {
     // Only toggle if the theme provider is ready
@@ -105,9 +161,43 @@ export default function Navigation() {
     console.log('[Nav] programsOpen changed:', programsOpen)
   }, [programsOpen])
 
-  // Determine if nav should be expanded (either not collapsed, or collapsed but hovered)
-  const isExpanded = !isCollapsed || isHovered
+  // Close PeekStrip on route change
+  useEffect(() => {
+    const handleRouteChange = () => {
+      closePeekStrip()
+    }
 
+    // Listen for popstate events (browser back/forward)
+    window.addEventListener('popstate', handleRouteChange)
+
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange)
+    }
+  }, [])
+
+  // Close PeekStrip on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (peekOpen) {
+        closePeekStrip()
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [peekOpen])
+
+  // Close PeekStrip when slider moves off Programs
+  useEffect(() => {
+    const currentIndex = Math.round(sliderPosition)
+    if (peekOpen && currentIndex !== 2) { // Programs is at index 2
+      closePeekStrip()
+    }
+  }, [sliderPosition, peekOpen])
+
+  // Determine if nav should be expanded (either not collapsed, or hovered, or dropdown open)
+  const isExpanded = !isCollapsed || isHovered || programsOpen
+  
   return (
     <>
       {/* Desktop Floating Navigation */}
@@ -156,19 +246,28 @@ export default function Navigation() {
                     <div
                       key={link.href}
                       className="relative"
-                      onMouseEnter={() => { console.log('[Nav] programs container mouseenter'); setActiveLink(link.href); setProgramsOpen(true) }}
-                      onMouseLeave={() => { console.log('[Nav] programs container mouseleave'); setActiveLink(pathname); setProgramsOpen(false) }}
+                      onMouseEnter={() => { console.log('[Nav] programs container mouseenter'); setActiveLink(link.href); openPrograms() }}
+                      onMouseLeave={() => { console.log('[Nav] programs container mouseleave'); setActiveLink(pathname); scheduleClosePrograms(200) }}
                     >
                       <button
-                        onClick={() => { console.log('[Nav] programs button click toggle', { from: programsOpen, to: !programsOpen }); setProgramsOpen(!programsOpen) }}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          console.log('[Nav] programs button click toggle peek strip')
+                          const willOpen = !peekOpen
+                          if (willOpen) {
+                            openPeekStrip()
+                          } else {
+                            closePeekStrip()
+                          }
+                        }}
                         className={`
                           nav-link relative px-5 py-2.5 rounded-full font-medium text-sm tracking-wide
                           transition-all duration-300 overflow-hidden
                           ${activeLink === link.href ? 'nav-link-active' : ''}
                         `}
                         aria-haspopup="menu"
-                        aria-expanded={programsOpen}
-                        aria-controls="programs-menu"
+                        aria-expanded={peekOpen}
+                        aria-controls="peek-strip"
                       >
                         <span className="relative z-10">{link.label}</span>
                         <div className="nav-link-bg" />
@@ -177,15 +276,15 @@ export default function Navigation() {
                       <div
                         id="programs-menu"
                         className={`
-                          absolute left-0 top-full mt-2 w-64 z-[60]
+                          absolute left-0 top-full mt-0 w-64 z-[60]
                           bg-white dark:bg-gray-900 border border-border/50 rounded-xl shadow-lg overflow-hidden
                           transition-all duration-200
                           ${programsOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}
                         `}
                         role="menu"
                         aria-label="Programs menu"
-                        onMouseEnter={() => console.log('[Nav] programs menu mouseenter')}
-                        onMouseLeave={() => console.log('[Nav] programs menu mouseleave')}
+                        onMouseEnter={() => { console.log('[Nav] programs menu mouseenter'); openPrograms() }}
+                        onMouseLeave={() => { console.log('[Nav] programs menu mouseleave'); scheduleClosePrograms(200) }}
                       >
                         <div className="py-2">
                           {programPages.map((p) => (
@@ -284,7 +383,14 @@ export default function Navigation() {
               const nearestIndex = Math.round(sliderPosition)
               setSliderPosition(nearestIndex)
 
-              // Navigate to the page
+              // Check if settled on Programs
+              if (nearestIndex === 2) { // Programs is at index 2 in navLinks array
+                e.preventDefault()
+                openPeekStrip()
+                return
+              }
+
+              // Navigate to the page for other links
               router.push(navLinks[nearestIndex].href)
             }}
           >
@@ -314,7 +420,7 @@ export default function Navigation() {
                       const isPrograms = link.href === '/programs'
 
                       if (isPrograms) {
-                        setMobileProgramsOpen(true)
+                        openPeekStrip()
                         return
                       }
 
@@ -392,6 +498,16 @@ export default function Navigation() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* PeekStrip Portal */}
+      {createPortal(
+        <PeekStrip
+          isOpen={peekOpen}
+          onClose={closePeekStrip}
+          position="mobile"
+        />,
+        document.getElementById('peek-strip-portal') as HTMLElement
       )}
     </>
   )

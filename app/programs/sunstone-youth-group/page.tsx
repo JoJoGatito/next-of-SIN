@@ -42,7 +42,7 @@ export default async function SunstoneYouthGroupPage() {
         <div className="prose dark:prose-invert max-w-none mb-12">
           <h2 className="text-2xl font-bold mb-4">About Sunstone Youth Group</h2>
           <p>
-            Sunstone Youth Group provides a safe and supportive space for LGBTQ+ youth to connect, learn, and grow together. 
+            Sunstone Youth Group provides a safe and supportive space for LGBTQIA+ youth to connect, learn, and grow together. 
             Our program focuses on creating a community where young people can express themselves authentically, 
             build friendships, and access resources specifically designed for their needs.
           </p>
@@ -51,10 +51,9 @@ export default async function SunstoneYouthGroupPage() {
           <ul>
             <li>Weekly meetings in a safe, affirming environment</li>
             <li>Peer support and mentorship opportunities</li>
-            <li>Educational workshops on LGBTQ+ history and issues</li>
+            <li>Educational workshops on LGBTQIA+ history and issues</li>
             <li>Creative expression through art, writing, and performance</li>
             <li>Social activities and community building events</li>
-            <li>Resources for families and allies</li>
           </ul>
 
           <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-sin-orange/10 to-sin-yellow/10 rounded-full inline-flex my-6">
@@ -83,41 +82,6 @@ export default async function SunstoneYouthGroupPage() {
             </Link>
           </div>
         </div>
-        <RainbowDivider marginClassName="my-12" />
-
-        <section aria-labelledby="program-info" className="mt-12">
-          <h2 id="program-info" className="text-2xl font-bold mb-4">Program Info</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="flex items-start gap-3 p-4 rounded-lg border border-orange-200/60 dark:border-orange-900/40 bg-orange-50/50 dark:bg-orange-950/20">
-              <Users className="w-5 h-5 text-sin-orange mt-1" aria-hidden="true" />
-              <div>
-                <p className="font-medium">{"Who it's for"}</p>
-                <p className="text-foreground/80">LGBTQ+ youth and allies in Southern Colorado.</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-4 rounded-lg border border-orange-200/60 dark:border-orange-900/40 bg-orange-50/50 dark:bg-orange-950/20">
-              <Calendar className="w-5 h-5 text-sin-orange mt-1" aria-hidden="true" />
-              <div>
-                <p className="font-medium">When we meet</p>
-                <p className="text-foreground/80">Weekly — see the Events page for dates and times.</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-4 rounded-lg border border-orange-200/60 dark:border-orange-900/40 bg-orange-50/50 dark:bg-orange-950/20">
-              <MapPin className="w-5 h-5 text-sin-orange mt-1" aria-hidden="true" />
-              <div>
-                <p className="font-medium">Where</p>
-                <p className="text-foreground/80">Locations in Pueblo and surrounding areas — details in each event.</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-4 rounded-lg border border-orange-200/60 dark:border-orange-900/40 bg-orange-50/50 dark:bg-orange-950/20">
-              <Shield className="w-5 h-5 text-sin-orange mt-1" aria-hidden="true" />
-              <div>
-                <p className="font-medium">Safety & support</p>
-                <p className="text-foreground/80">Respectful, confidential, and affirming space facilitated by trained volunteers.</p>
-              </div>
-            </div>
-          </div>
-        </section>
         <RainbowDivider marginClassName="my-12" />
 
         <section aria-labelledby="gallery" className="mt-12">

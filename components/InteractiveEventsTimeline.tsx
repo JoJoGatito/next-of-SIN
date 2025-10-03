@@ -119,6 +119,7 @@ export default function InteractiveEventsTimeline({ events }: InteractiveEventsT
                         {event.location}
                       </div>
                     </div>
+                  </div>
                     
                     {/* Click indicator */}
                     <div className={`text-muted-foreground text-xs mt-3 ${selectedEvent === event.id ? 'hidden' : ''}`}>

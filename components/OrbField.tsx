@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react';
+import { useReducedMotion } from '@/lib/useReducedMotion';
 
 type OrbFieldProps = {
   count?: number;
@@ -41,6 +42,7 @@ function seededRng(seed: string) {
 
 export default function OrbField({ count = 3, seed = 'orbfield', className = '' }: OrbFieldProps) {
   const rng = seededRng(seed);
+  const prefersReducedMotion = useReducedMotion();
 
   const colorClasses = [
     'bg-white dark:bg-white/10',
@@ -54,6 +56,9 @@ export default function OrbField({ count = 3, seed = 'orbfield', className = '' 
     'animate-float-slow'
   ];
 
+  // Use static positioning for reduced motion users
+  const staticClasses = prefersReducedMotion ? 'opacity-20' : '';
+
   const orbs = Array.from({ length: count }).map((_, i) => {
     const r1 = rng();
     const r2 = rng();
@@ -65,13 +70,19 @@ export default function OrbField({ count = 3, seed = 'orbfield', className = '' 
     const leftPct = Math.round(5 + r3 * 80); // 5% - 85%
 
     const color = colorClasses[Math.floor(r4 * colorClasses.length)];
-    const anim = animationClasses[Math.floor(r2 * animationClasses.length)];
+    const anim = prefersReducedMotion ? '' : animationClasses[Math.floor(r2 * animationClasses.length)];
 
     return (
       <div
         key={i}
-        className={`absolute rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-xl opacity-10 dark:opacity-10 ${color} ${anim}`}
-        style={{ top: `${topPct}%`, left: `${leftPct}%`, width: size, height: size }}
+        className={`absolute rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-xl ${color} ${anim} ${staticClasses}`}
+        style={{
+          top: `${topPct}%`,
+          left: `${leftPct}%`,
+          width: size,
+          height: size,
+          willChange: prefersReducedMotion ? 'auto' : 'transform'
+        }}
         aria-hidden="true"
       />
     );

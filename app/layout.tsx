@@ -5,6 +5,8 @@ import { ThemeProvider } from '@/components/ThemeProvider'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import ChromeGuard from '@/components/ChromeGuard'
+import { AriaAnnounceProvider } from '@/components/AriaLiveRegion'
+import { FocusProvider, FocusIndicator, SkipLink } from '@/components/FocusManager'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -50,25 +52,40 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.variable} font-sans min-h-screen flex flex-col`}>
-        <a href="#main" className="skip-to-content">
+        <SkipLink href="#main">
           Skip to main content
-        </a>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <ChromeGuard>
-            <Navigation />
-          </ChromeGuard>
-          <main id="main" className="flex-grow pb-16 md:pb-0 bg-gradient-to-b from-sin-yellow/10 via-sin-orange/10 to-sin-yellow/10 dark:bg-transparent">
-            {children}
-          </main>
-          <ChromeGuard>
-            <Footer />
-          </ChromeGuard>
-        </ThemeProvider>
+        </SkipLink>
+        <FocusProvider>
+          <AriaAnnounceProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <FocusIndicator>
+                <ChromeGuard>
+                  <Navigation />
+                </ChromeGuard>
+                <main id="main" className="flex-grow pb-16 md:pb-0 bg-gradient-to-b from-sin-yellow/10 via-sin-orange/10 to-sin-yellow/10 dark:bg-transparent">
+                  {children}
+                </main>
+                <ChromeGuard>
+                  <Footer />
+                </ChromeGuard>
+                {/* Portal mounting point for PeekStrip component */}
+                <div
+                  id="peek-strip-portal"
+                  className="fixed inset-0 z-40 pointer-events-none"
+                  style={{
+                    zIndex: 40,
+                    pointerEvents: 'none'
+                  }}
+                />
+              </FocusIndicator>
+            </ThemeProvider>
+          </AriaAnnounceProvider>
+        </FocusProvider>
       </body>
     </html>
   )
