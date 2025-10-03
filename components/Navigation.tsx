@@ -33,6 +33,7 @@ export default function Navigation() {
   const [programsOpen, setProgramsOpen] = useState(false)
   const [mobileProgramsOpen, setMobileProgramsOpen] = useState(false)
   const [peekOpen, setPeekOpen] = useState(false)
+  const [portalEl, setPortalEl] = useState<HTMLElement | null>(null)
   const pathname = usePathname()
   const router = useRouter()
   const { theme, setTheme, isReady } = useTheme()
@@ -77,6 +78,13 @@ export default function Navigation() {
         clearTimeout(peekTimeoutRef.current)
       }
     }
+  }, [])
+
+  // Resolve portal mount target on client only
+  useEffect(() => {
+    const el = document.getElementById('peek-strip-portal') as HTMLElement | null
+    setPortalEl(el)
+    console.log('[Nav] portal target found:', !!el)
   }, [])
 
   // PeekStrip handlers
@@ -501,13 +509,13 @@ export default function Navigation() {
       )}
 
       {/* PeekStrip Portal */}
-      {createPortal(
+      {portalEl && createPortal(
         <PeekStrip
           isOpen={peekOpen}
           onClose={closePeekStrip}
           position="mobile"
         />,
-        document.getElementById('peek-strip-portal') as HTMLElement
+        portalEl
       )}
     </>
   )
