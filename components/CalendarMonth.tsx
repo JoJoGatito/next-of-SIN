@@ -237,7 +237,7 @@ export default function CalendarMonth({
             role="gridcell"
             tabIndex={focusedDay === day.dayKey ? 0 : -1}
             className={`
-              relative min-h-[120px] p-2 rounded-lg border transition-all duration-200 cursor-pointer
+              relative min-h-[72px] md:min-h-[120px] p-2 md:p-3 rounded-lg border transition-all duration-200 cursor-pointer
               backdrop-blur-sm hover:bg-accent/50 focus:outline-none focus:ring-2 focus:ring-sin-orange
               ${day.isCurrentMonth
                 ? 'bg-background/50 border-border/50'
@@ -280,68 +280,87 @@ export default function CalendarMonth({
               <div className="absolute top-1 right-1 w-2 h-2 bg-sin-orange rounded-full" />
             )}
 
-            {/* Events */}
+            {/* Events - Mobile: dots, Desktop: pills */}
             {day.events.length > 0 && (
-              <div className="space-y-1">
-                {day.events.length === 1 ? (
-                  (() => {
-                    const event = day.events[0]
-                    const eventStart = event.start ? new Date(event.start) : null
-                    const eventEnd = event.end ? new Date(event.end) : null
-                    const currentDay = new Date(day.dayKey)
-            
-                    const isMultiDay = eventStart && eventEnd &&
-                      (eventEnd.getTime() - eventStart.getTime()) > 24 * 60 * 60 * 1000
-            
-                    const isFirstDay = isMultiDay && eventStart &&
-                      currentDay.toDateString() === eventStart.toDateString()
-            
-                    const isLastDay = isMultiDay && eventEnd &&
-                      currentDay.toDateString() === eventEnd.toDateString()
-            
-                    return (
-                      <EventPill
-                        key={event.id}
-                        event={event}
-                        fullHeight={true}
-                        isMultiDay={isMultiDay || undefined}
-                        isFirstDay={isFirstDay || undefined}
-                        isLastDay={isLastDay || undefined}
+              <>
+                {/* Mobile dot indicators */}
+                <div className="block md:hidden mt-1">
+                  <div
+                    className="flex justify-center items-center gap-1"
+                    aria-label={`${day.events.length} event${day.events.length !== 1 ? 's' : ''} on ${day.date.toLocaleDateString(locale, { month: 'long', day: 'numeric' })}`}
+                  >
+                    {Array.from({ length: Math.min(day.events.length, 3) }).map((_, index) => (
+                      <div
+                        key={index}
+                        className="w-1.5 h-1.5 bg-foreground/70 rounded-full"
+                        aria-hidden="true"
                       />
-                    )
-                  })()
-                ) : (
-                  day.events.slice(0, 3).map((event) => {
-                    const eventStart = event.start ? new Date(event.start) : null
-                    const eventEnd = event.end ? new Date(event.end) : null
-                    const currentDay = new Date(day.dayKey)
-            
-                    const isMultiDay = eventStart && eventEnd &&
-                      (eventEnd.getTime() - eventStart.getTime()) > 24 * 60 * 60 * 1000
-            
-                    const isFirstDay = isMultiDay && eventStart &&
-                      currentDay.toDateString() === eventStart.toDateString()
-            
-                    const isLastDay = isMultiDay && eventEnd &&
-                      currentDay.toDateString() === eventEnd.toDateString()
-            
-                    return (
-                      <EventPill
-                        key={event.id}
-                        event={event}
-                        isMultiDay={isMultiDay || undefined}
-                        isFirstDay={isFirstDay || undefined}
-                        isLastDay={isLastDay || undefined}
-                      />
-                    )
-                  })
-                )}
-                {day.events.length > 3 && (
-                  <div className="text-xs text-muted-foreground font-medium">
-                    +{day.events.length - 3} more
+                    ))}
                   </div>
-                )}
-              </div>
+                </div>
+
+                {/* Desktop event pills */}
+                <div className="hidden md:block space-y-1">
+                  {day.events.length === 1 ? (
+                    (() => {
+                      const event = day.events[0]
+                      const eventStart = event.start ? new Date(event.start) : null
+                      const eventEnd = event.end ? new Date(event.end) : null
+                      const currentDay = new Date(day.dayKey)
+
+                      const isMultiDay = eventStart && eventEnd &&
+                        (eventEnd.getTime() - eventStart.getTime()) > 24 * 60 * 60 * 1000
+
+                      const isFirstDay = isMultiDay && eventStart &&
+                        currentDay.toDateString() === eventStart.toDateString()
+
+                      const isLastDay = isMultiDay && eventEnd &&
+                        currentDay.toDateString() === eventEnd.toDateString()
+
+                      return (
+                        <EventPill
+                          key={event.id}
+                          event={event}
+                          fullHeight={true}
+                          isMultiDay={isMultiDay || undefined}
+                          isFirstDay={isFirstDay || undefined}
+                          isLastDay={isLastDay || undefined}
+                        />
+                      )
+                    })()
+                  ) : (
+                    day.events.slice(0, 3).map((event) => {
+                      const eventStart = event.start ? new Date(event.start) : null
+                      const eventEnd = event.end ? new Date(event.end) : null
+                      const currentDay = new Date(day.dayKey)
+
+                      const isMultiDay = eventStart && eventEnd &&
+                        (eventEnd.getTime() - eventStart.getTime()) > 24 * 60 * 60 * 1000
+
+                      const isFirstDay = isMultiDay && eventStart &&
+                        currentDay.toDateString() === eventStart.toDateString()
+
+                      const isLastDay = isMultiDay && eventEnd &&
+                        currentDay.toDateString() === eventEnd.toDateString()
+
+                      return (
+                        <EventPill
+                          key={event.id}
+                          event={event}
+                          isMultiDay={isMultiDay || undefined}
+                          isFirstDay={isFirstDay || undefined}
+                          isLastDay={isLastDay || undefined}
+                        />
+                      )
+                    })
+                  )}
+                  {day.events.length > 3 && (
+                    <div className="text-xs text-muted-foreground font-medium">
+                      +{day.events.length - 3} more
+                    </div>
+                  )}
+                </div>
+              </>
             )}
           </div>
         ))}

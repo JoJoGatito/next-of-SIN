@@ -54,6 +54,18 @@ export default function EventsClient({ events }: EventsClientProps) {
   })
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Check if mobile on mount and resize
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   // Update URL when view mode changes (idempotent; avoid searchParams in deps to prevent loops)
   useEffect(() => {
@@ -101,7 +113,10 @@ export default function EventsClient({ events }: EventsClientProps) {
   // Handle day selection
   const handleDaySelect = (day: string) => {
     setSelectedDay(day)
-    setIsDrawerOpen(true)
+    // Only open drawer on desktop, mobile shows inline agenda
+    if (!isMobile) {
+      setIsDrawerOpen(true)
+    }
   }
 
   // Close drawer
@@ -286,7 +301,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                 </div>
               </div>
             </div>
-            
+
             <CalendarMonth
               year={currentYear}
               month={currentMonth}
@@ -296,6 +311,100 @@ export default function EventsClient({ events }: EventsClientProps) {
               locale="en-US"
               weekStartsOn={0}
             />
+
+            {/* Mobile inline agenda */}
+            {isMobile && (
+              <div className="mt-6 md:hidden">
+                {!selectedDay ? (
+                  <div className="text-center py-8">
+                    <Calendar className="w-12 h-12 mx-auto mb-4 text-foreground/30" />
+                    <p className="text-foreground/60">Tap a date to see events</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 pb-2 border-b border-border/50">
+                      <Calendar className="w-5 h-5 text-sin-orange" />
+                      <h3 className="text-lg font-bold text-foreground">
+                        Events for {new Date(selectedDay).toLocaleDateString('en-US', {
+                          weekday: 'long',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                      </h3>
+                    </div>
+
+                    {selectedDayEvents.length > 0 ? (
+                      selectedDayEvents.map((event) => (
+                        <div
+                          key={event.id}
+                          className="relative overflow-hidden rounded-xl hover:scale-[1.02] transition-transform duration-300"
+                        >
+                          {/* Gradient background */}
+                          <div className={`absolute inset-0 bg-gradient-to-br ${getProgramColor(event.program)} opacity-90`} />
+
+                          {/* Glass morphism card */}
+                          <div className="relative backdrop-blur-xl bg-card/20 p-4">
+                            <div className="flex items-start justify-between mb-2">
+                              <div className="flex-1">
+                                <h4 className="text-lg font-bold text-foreground mb-1">{event.title}</h4>
+                                {event.program && (
+                                  <div className="flex items-center gap-2 mb-2">
+                                    <span className="bg-muted/80 backdrop-blur px-2 py-1 rounded-full text-foreground text-sm">
+                                      {event.program}
+                                    </span>
+                                  </div>
+                                )}
+                                {event.description && (
+                                  <p className="text-foreground/80 text-sm mb-2">{event.description}</p>
+                                )}
+
+                                <div className="flex flex-wrap gap-3 text-sm text-foreground/70">
+                                  <div className="flex items-center gap-1">
+                                    <Clock className="w-4 h-4" />
+                                    {new Date(event.start).toLocaleTimeString('en-US', {
+                                      hour: 'numeric',
+                                      minute: '2-digit',
+                                      hour12: true
+                                    })}
+                                    {event.end && (
+                                      <>
+                                        {' - '}
+                                        {new Date(event.end).toLocaleTimeString('en-US', {
+                                          hour: 'numeric',
+                                          minute: '2-digit',
+                                          hour12: true
+                                        })}
+                                      </>
+                                    )}
+                                  </div>
+                                  {event.location && (
+                                    <div className="flex items-center gap-1">
+                                      <MapPin className="w-4 h-4" />
+                                      {event.location}
+                                    </div>
+                                  )}
+                                  {event.capacity && (
+                                    <div className="flex items-center gap-1">
+                                      <Users className="w-4 h-4" />
+                                      {event.attendees || 0}/{event.capacity} spots
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-center py-8">
+                        <Calendar className="w-12 h-12 mx-auto mb-4 text-foreground/30" />
+                        <p className="text-foreground/60">No events on this date</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
 
