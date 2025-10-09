@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Rainbow, Heart, Accessibility, Utensils, Palette, ChevronDown } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { AccessibleGradient } from './AccessibleGradient'
 
 const programs = [
@@ -12,7 +12,6 @@ const programs = [
     slug: "sunstone-youth-group",
     description: "A safe and supportive space for LGBTQ+ youth to connect, learn, and grow together through weekly meetings, mentorship, and community activities.",
     color: "from-orange-400 to-orange-600",
-    icon: Rainbow,
     meetingFrequency: "Weekly meetings"
   },
   {
@@ -21,7 +20,6 @@ const programs = [
     slug: "rock-and-stone",
     description: "Inclusive outdoor and nature group that welcomes everyone who wants to explore and connect with the natural world. We organize accessible activities for all skill levels and abilities in Southern Colorado.",
     color: "from-yellow-400 to-amber-600",
-    icon: Heart,
     meetingFrequency: null
   },
   {
@@ -30,7 +28,6 @@ const programs = [
     slug: "disabitch",
     description: "A community that celebrates disability culture, advocates for accessibility, and creates spaces where disabled individuals can connect, share experiences, and build solidarity.",
     color: "from-red-400 to-red-600",
-    icon: Accessibility,
     meetingFrequency: null
   },
   {
@@ -39,7 +36,6 @@ const programs = [
     slug: "cafeteria-collective",
     description: "Queer meet and greet where we can share stories, food, connections, and build community.",
     color: "from-green-400 to-green-600",
-    icon: Utensils,
     meetingFrequency: null
   },
   {
@@ -48,22 +44,19 @@ const programs = [
     slug: "hue-house",
     description: "A vibrant community of BIPOC-focused discussions, meet & greets, and local events that celebrate the diversity of the queer community and its allies in Southern Colorado.",
     color: "from-purple-400 to-purple-600",
-    icon: Palette,
     meetingFrequency: "Monthly meetings"
   },
 ]
 
 export default function ModernProgramCards() {
-  const [expandedCard, setExpandedCard] = useState<number | null>(null)
+  const [expandedId, setExpandedId] = useState<number | null>(null)
 
-  const toggleCard = (id: number) => {
-    setExpandedCard(expandedCard === id ? null : id)
+  const toggle = (id: number) => {
+    setExpandedId((prev) => (prev === id ? null : id))
   }
 
-  const selectedProgram = programs.find(p => p.id === expandedCard)
-
   return (
-    <div className="py-12 sm:py-16 px-4 md:px-8 lg:px-16 relative">
+    <section className="py-12 sm:py-16 px-4 md:px-8 lg:px-16">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
@@ -74,185 +67,73 @@ export default function ModernProgramCards() {
           </p>
         </div>
 
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-8">
-          {programs.map((program, index) => {
-            const isExpanded = expandedCard === program.id
-            
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+          {programs.map((program) => {
+            const isExpanded = expandedId === program.id
             return (
-              <div key={program.id}>
-                {/* Card - always compact on desktop, expands on mobile */}
-                <div
-                  className={`relative transition-all duration-500 ease-in-out ${
-                    // On mobile (sm and below), expand the card
-                    isExpanded ? 'sm:col-span-2 lg:col-span-1' : ''
-                  }`}
-                  style={{
-                    animationDelay: `${index * 50}ms`,
-                  }}
-                >
-                  <div 
-                    className={`group relative h-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-xl border border-border/50 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden ${
-                      isExpanded ? 'ring-2 ring-sin-orange lg:ring-2' : 'hover:scale-105 hover:-translate-y-1'
-                    }`}
-                    onClick={() => toggleCard(program.id)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault()
-                        toggleCard(program.id)
-                      }
-                    }}
-                    role="button"
-                    tabIndex={0}
-                    aria-expanded={isExpanded}
-                    aria-label={`${program.title} - ${program.description} ${isExpanded ? 'Expanded' : 'Click to expand for more information'}`}
+              <div
+                key={program.id}
+                role="button"
+                tabIndex={0}
+                aria-expanded={isExpanded}
+                aria-label={`${program.title} card. ${isExpanded ? 'Collapse' : 'Expand to read more'}`}
+                onClick={() => toggle(program.id)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    toggle(program.id)
+                  }
+                }}
+                className="group relative block rounded-xl border border-zinc-200 bg-white shadow-none px-4 py-4 active:scale-[0.99] transition-transform dark:border-zinc-700 dark:bg-zinc-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60"
+                style={{ touchAction: 'manipulation' }}
+              >
+                {/* Static left stripe accent */}
+                <span
+                  className={`pointer-events-none absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b ${program.color}`}
+                  aria-hidden="true"
+                />
+
+                <div className="pl-3">
+                  <h3 className="text-[clamp(1.125rem,1.8vw,1.25rem)] font-semibold text-zinc-900 dark:text-zinc-100">
+                    {program.title}
+                  </h3>
+
+                  <p
+                    className={`mt-1 text-sm text-zinc-600 dark:text-zinc-400 ${isExpanded ? '' : 'line-clamp-2'}`}
                   >
-                    {/* Gradient accent line - hidden from screen readers */}
-                    <div 
-                      className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${program.color}`}
-                      aria-hidden="true"
-                      role="presentation"
-                    />
-                    
-                    {/* Compact view - always visible */}
-                    <div className="p-4">
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="flex items-center">
-                          <div className="flex-1">
-                            <h3 className="font-bold text-lg text-foreground leading-tight">
-                              {program.title}
-                            </h3>
-                            {/* Show description on mobile when not expanded, always show on desktop */}
-                            <p className={`text-sm text-muted-foreground mt-1 line-clamp-1 ${
-                              !isExpanded ? 'block' : 'hidden lg:block'
-                            }`}>
-                              {program.description}
-                            </p>
-                          </div>
-                        </div>
-                        <ChevronDown 
-                          className={`w-5 h-5 text-muted-foreground transition-transform duration-300 flex-shrink-0 ${
-                            isExpanded ? 'rotate-180' : ''
-                          }`} 
-                        />
-                      </div>
-                    </div>
-                    
-                    {/* Mobile expanded content - only show on mobile */}
-                    <div className={`lg:hidden transition-all duration-500 ease-in-out overflow-hidden ${
-                      isExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                    }`}>
-                      <div className="px-4 pb-4 space-y-4">
-                        <p className="text-muted-foreground">
-                          {program.description}
-                        </p>
-                        
-                        {/* Meeting frequency */}
-                        {program.meetingFrequency && (
-                          <div className="flex flex-wrap gap-3">
-                            <div
-                              className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-sin-orange/10 to-sin-yellow/10 rounded-full"
-                            >
-                              <span className="text-sm font-medium text-foreground">{program.meetingFrequency}</span>
-                            </div>
-                          </div>
-                        )}
-                        
-                        {/* Call to action buttons */}
-                        <div className="flex flex-wrap gap-2 pt-2">
-                          <Link
-                            href={`/programs/${program.slug}`}
-                            className="px-4 py-2 bg-gradient-to-r from-sin-orange to-sin-yellow text-white font-medium rounded-lg hover:shadow-md transition-all duration-300"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                            }}
-                            aria-label={`Learn more about ${program.title} program`}
-                          >
-                            Learn More
-                          </Link>
-                          <Link
-                            href={`/programs/${program.slug}#join`}
-                            className="px-4 py-2 border border-sin-orange text-sin-orange font-medium rounded-lg hover:bg-sin-orange/10 transition-all duration-300"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                            }}
-                            aria-label={`Join ${program.title} program and community`}
-                          >
-                            Join Program
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
+                    {program.description}
+                  </p>
+
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {program.meetingFrequency && (
+                      <span
+                        className="rounded-full border border-zinc-200 px-2.5 py-1 text-xs text-zinc-700 dark:border-zinc-700 dark:text-zinc-300"
+                      >
+                        {program.meetingFrequency}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="mt-4 flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400">
+                    <Link
+                      href={`/programs/${program.slug}`}
+                      className="inline-flex items-center gap-1"
+                      aria-label={`Learn more about ${program.title} program`}
+                      onClick={(e) => {
+                        // Prevent card toggle when tapping the CTA
+                        e.stopPropagation()
+                      }}
+                    >
+                      <span className="font-medium">Learn more</span>
+                      <ArrowRight className="h-4 w-4 transition-transform group-active:translate-x-px motion-reduce:transition-none" />
+                    </Link>
                   </div>
                 </div>
               </div>
             )
           })}
         </div>
-
-        {/* Desktop expanded content - shows below the grid */}
-        {selectedProgram && (
-          <div className="hidden lg:block transition-all duration-500 ease-in-out">
-            <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-xl border border-border/50 shadow-lg p-6 mx-auto max-w-4xl">
-              {/* Header */}
-              <div className="mb-6">
-                <div>
-                  <h3 className="text-2xl font-bold text-foreground">
-                    {selectedProgram.title}
-                  </h3>
-                  <div 
-                    className={`w-12 h-1 bg-gradient-to-r ${selectedProgram.color} rounded-full mt-2`}
-                    aria-hidden="true"
-                    role="presentation"
-                  />
-                </div>
-              </div>
-              
-              {/* Content */}
-              <div className="space-y-6">
-                <p className="text-muted-foreground text-lg leading-relaxed">
-                  {selectedProgram.description}
-                </p>
-                
-                {/* Meeting frequency */}
-                {selectedProgram.meetingFrequency && (
-                  <div className="flex flex-wrap gap-3">
-                    <div
-                      className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-sin-orange/10 to-sin-yellow/10 rounded-full"
-                    >
-                      <span className="text-base font-medium text-foreground">{selectedProgram.meetingFrequency}</span>
-                    </div>
-                  </div>
-                )}
-                
-                {/* Call to action buttons */}
-                <div className="flex flex-wrap gap-4 pt-2">
-                  <Link
-                    href={`/programs/${selectedProgram.slug}`}
-                    className="px-6 py-3 bg-gradient-to-r from-sin-orange to-sin-yellow text-white font-medium rounded-lg hover:shadow-md transition-all duration-300 hover:scale-105"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                    }}
-                    aria-label={`Learn more about ${selectedProgram.title} program details, events, and community`}
-                  >
-                    Learn More
-                  </Link>
-                  <Link
-                    href={`/programs/${selectedProgram.slug}#join`}
-                    className="px-6 py-3 border-2 border-sin-orange text-sin-orange font-medium rounded-lg hover:bg-sin-orange/10 transition-all duration-300 hover:scale-105"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                    }}
-                    aria-label={`Join ${selectedProgram.title} program and community`}
-                  >
-                    Join Program
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
-    </div>
+    </section>
   )
 }
