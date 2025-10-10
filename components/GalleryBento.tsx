@@ -12,18 +12,17 @@ interface GalleryBentoProps {
 
 // Loading skeleton component
 const GallerySkeleton = () => (
-  <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-fr">
+  <div className="grid grid-cols-1 gap-4 md:block md:columns-3 lg:columns-4 md:[column-gap:1rem]">
     {Array.from({ length: 8 }).map((_, index) => (
       <div
         key={index}
-        className={`bg-gray-200 dark:bg-gray-800 rounded-lg animate-pulse ${
-          index % 3 === 0 ? 'md:col-span-2 md:row-span-1' : // wide
-          index % 3 === 1 ? 'md:col-span-1 md:row-span-2' : // tall
-          'md:col-span-1 md:row-span-1' // square
+        className={`bg-gray-200 dark:bg-gray-800 rounded-lg animate-pulse mb-4 ${
+          index % 3 === 0
+            ? 'aspect-[4/3]'
+            : index % 3 === 1
+            ? 'aspect-[3/4]'
+            : 'aspect-square'
         }`}
-        style={{
-          aspectRatio: index % 3 === 0 ? '16/9' : index % 3 === 1 ? '9/16' : '1/1'
-        }}
       />
     ))}
   </div>
@@ -55,43 +54,32 @@ const GalleryImage = ({
   aspectRatio: 'square' | 'wide' | 'tall'
   priority?: boolean
 }) => {
-  // Get the aspect ratio classes for the grid item
+  // Grid sizing (only relevant on small screens where we still use grid)
   const getGridClasses = () => {
-    const baseClasses = 'relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800'
+const baseClasses = 'relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 mb-4 break-inside-avoid'
 
     switch (aspectRatio) {
       case 'wide':
-        return `${baseClasses} md:col-span-2 md:row-span-1`
+        return `${baseClasses} md:col-span-2`
       case 'tall':
-        return `${baseClasses} md:col-span-1 md:row-span-2`
+        return `${baseClasses} md:col-span-2`
       default: // square
-        return `${baseClasses} md:col-span-1 md:row-span-1`
+        return `${baseClasses} md:col-span-1`
     }
   }
 
-  // Get aspect ratio for the image itself
-  const getAspectRatio = () => {
-    switch (aspectRatio) {
-      case 'wide':
-        return '16/9'
-      case 'tall':
-        return '9/16'
-      default:
-        return '1/1'
-    }
-  }
+  const width = image.asset.metadata?.dimensions?.width || 1
+  const height = image.asset.metadata?.dimensions?.height || 1
 
   return (
     <div className={getGridClasses()}>
-      <div
-        className="relative w-full h-full"
-        style={{ aspectRatio: getAspectRatio() }}
-      >
+      <div className="relative">
         <Image
           src={image.asset.url}
           alt={alt}
-          fill
-          className="object-cover transition-transform duration-300 hover:scale-105"
+          width={width}
+          height={height}
+          className="w-full h-auto block rounded-lg transition-transform duration-300 hover:scale-[1.01]"
           priority={priority}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           quality={85}
@@ -139,7 +127,7 @@ export default function GalleryBento({
       </div>
 
       <div
-        className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-fr"
+        className="grid grid-cols-1 gap-4 md:block md:columns-3 lg:columns-4 md:[column-gap:1rem]"
         role="region"
         aria-label="Program photo gallery"
       >

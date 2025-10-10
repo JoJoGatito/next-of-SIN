@@ -32,9 +32,36 @@ export default async function EventsPage() {
   const validEvents = (events || []).filter((e): e is SanityEvent & { start: string } => {
     return typeof e.start === 'string' && e.start.length > 0
   })
-  console.log('[EventsPage] valid events with start', { total: events?.length ?? 0, valid: validEvents.length })
 
-  const transformedEvents = validEvents.map((e) => ({
+  // America/Denver day-based filter:
+  // Keep events whose end date (if present) or start date is today or later in America/Denver.
+  const fmt = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Denver',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  })
+  const todayYMD = fmt.format(new Date())
+
+  const toYMDInTZ = (iso?: string) => {
+    if (!iso) return null
+    const d = new Date(iso)
+    return fmt.format(d)
+  }
+
+  const upcomingEvents = validEvents.filter((e) => {
+    const lastYMD = toYMDInTZ(e.end ?? e.start)
+    return !!lastYMD && lastYMD >= todayYMD
+  })
+
+  console.log('[EventsPage] upcoming (America/Denver day-based)', {
+    total: events?.length ?? 0,
+    valid: validEvents.length,
+    upcoming: upcomingEvents.length,
+    todayYMD,
+  })
+
+  const transformedEvents = upcomingEvents.map((e) => ({
     id: e._id,
     title: e.title ?? 'Untitled Event',
     start: e.start,
