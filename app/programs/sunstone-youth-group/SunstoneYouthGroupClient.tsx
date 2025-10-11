@@ -16,12 +16,12 @@ export default function SunstoneYouthGroupClient({ gallery }: SunstoneYouthGroup
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
-    <div className="min-h-screen py-16 px-4 md:px-8">
-      <div className="max-w-4xl mx-auto">
+    <div className="sunstone-theme bg-sy-background text-sy-text min-h-screen py-16 px-4 md:px-8">
+      <div className="max-w-4xl mx-auto sy-panel-subtle p-6 md:p-8">
         <h1 className="sr-only">Sunstone Youth Group</h1>
         <div className="mb-8 flex items-center justify-center">
           <Image
-            src="/assets/images/logo/SYG%20LOGO-2.webp"
+            src="/assets/images/logo/syg_logo.webp"
             alt="Sunstone Youth Group"
             width={800}
             height={800}
@@ -31,7 +31,7 @@ export default function SunstoneYouthGroupClient({ gallery }: SunstoneYouthGroup
         </div>
         <RainbowDivider marginClassName="my-8" />
 
-        <div className="prose dark:prose-invert max-w-none mb-12">
+        <div className="prose dark:prose-invert max-w-none mb-12 prose-headings:text-sy-text prose-p:text-sy-text prose-strong:text-sy-text prose-a:text-sy-primary">
           <h2 className="text-2xl font-bold mb-4">About Sunstone Youth Group</h2>
           <p>
             Sunstone Youth Group provides a safe and supportive space for LGBTQIA+ youth to connect, learn, and grow together.
@@ -48,8 +48,8 @@ export default function SunstoneYouthGroupClient({ gallery }: SunstoneYouthGroup
             <li>Social activities and community building events</li>
           </ul>
 
-          <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-sin-orange/10 to-sin-yellow/10 rounded-full inline-flex my-6">
-            <Calendar className="w-5 h-5 text-sin-orange" aria-hidden="true" />
+          <div className="sy-badge my-6 gap-2">
+            <Calendar className="w-5 h-5 text-sy-primary" aria-hidden="true" />
             <span className="text-base font-medium">Weekly meetings</span>
           </div>
 
@@ -62,14 +62,14 @@ export default function SunstoneYouthGroupClient({ gallery }: SunstoneYouthGroup
           <div className="flex flex-wrap gap-4 pt-4 mt-4">
             <button
               onClick={() => setIsModalOpen(true)}
-              className="px-6 py-3 bg-gradient-to-r from-sin-orange to-sin-yellow text-white font-medium rounded-lg hover:shadow-md transition-all duration-300 hover:scale-105"
+              className="px-6 py-3 bg-sy-primary-bg text-sy-primary-contrast font-semibold rounded-lg hover:bg-sy-primary-hover transition-all duration-200 sy-focusable"
               aria-label="Join Sunstone Youth Group program"
             >
               Join Our Program
             </button>
             <Link
               href="/events"
-              className="px-6 py-3 border-2 border-sin-orange text-sin-orange font-medium rounded-lg hover:bg-sin-orange/10 transition-all duration-300 hover:scale-105"
+              className="px-6 py-3 border-2 border-sy-primary text-sy-primary font-semibold rounded-lg hover:bg-sy-primary-soft transition-all duration-200 sy-focusable"
             >
               Upcoming Events
             </Link>
@@ -82,7 +82,7 @@ export default function SunstoneYouthGroupClient({ gallery }: SunstoneYouthGroup
           <GalleryBento gallery={gallery} />
           <p className="text-sm text-foreground/70 mt-3">
             More photos coming soon. See upcoming outings and events on our{' '}
-            <Link href="/events" className="text-sin-orange underline-offset-2 hover:underline">Events</Link> page.
+            <Link href="/events" className="text-sy-primary underline-offset-2 hover:underline">Events</Link> page.
           </p>
         </section>
 

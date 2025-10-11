@@ -470,6 +470,8 @@ export default function AboutPage() {
         </div>
       </section>
 
+{false && (
+      <>
 <RainbowDivider marginClassName="my-12" />
       {/* Board Members Section - Subtle Separation */}
       <section className="py-16 px-4 md:px-8 lg:px-16 bg-transparent dark:bg-transparent text-gray-900 dark:text-white relative overflow-hidden">
@@ -479,7 +481,7 @@ export default function AboutPage() {
         
         <div className="max-w-6xl mx-auto relative z-10">
           <AnimatedSection className="text-center mb-12">
-            <motion.h2 
+            <motion.h2
               className="text-3xl md:text-4xl font-bold mb-4 text-brand-dark-red dark:text-sin-yellow"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -487,7 +489,7 @@ export default function AboutPage() {
             >
               The Humans That Made This Reality
             </motion.h2>
-            <motion.p 
+            <motion.p
               className="text-lg text-sin-orange dark:text-sin-orange"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -500,7 +502,7 @@ export default function AboutPage() {
           <StaggeredContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {boardMembers.map((member, index) => (
               <StaggeredItem key={member.id}>
-                <motion.div 
+                <motion.div
                   className="relative group"
                   whileHover={{ y: -10 }}
                   transition={{ type: "spring", stiffness: 300 }}
@@ -508,8 +510,8 @@ export default function AboutPage() {
                   {/* Sun rays container */}
                   <div className="relative">
                     {/* Sun head background - decorative */}
-                    <motion.div 
-                      className="absolute inset-0 flex items-center justify-center" 
+                    <motion.div
+                      className="absolute inset-0 flex items-center justify-center"
                       aria-hidden="true"
                       animate={{ rotate: 360 }}
                       transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
@@ -525,7 +527,7 @@ export default function AboutPage() {
                     </motion.div>
                     
                     {/* Member photo with hover effect */}
-                    <motion.div 
+                    <motion.div
                       className="relative z-10 mx-auto w-48 h-48 rounded-full overflow-hidden"
                       whileHover={{ scale: 1.1 }}
                       transition={{ type: "spring", stiffness: 300 }}
@@ -538,12 +540,12 @@ export default function AboutPage() {
                           className="object-cover transition-transform duration-300 group-hover:scale-110"
                         />
                       ) : (
-                        <motion.div 
+                        <motion.div
                           className="w-full h-full bg-gradient-to-br from-sin-orange/50 to-sin-red/50 flex items-center justify-center"
                           role="img"
                           aria-label="Board member position available - placeholder image"
-                          whileHover={{ 
-                            background: "linear-gradient(135deg, var(--sin-yellow), var(--sin-red))" 
+                          whileHover={{
+                            background: "linear-gradient(135deg, var(--sin-yellow), var(--sin-red))"
                           }}
                         >
                           <Users className="w-24 h-24 text-white/50" aria-hidden="true" />
@@ -553,13 +555,13 @@ export default function AboutPage() {
                   </div>
 
                   {/* Member info with staggered animation */}
-                  <motion.div 
+                  <motion.div
                     className="mt-6 text-center"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 + 0.3 }}
                   >
-                    <motion.h3 
+                    <motion.h3
                       className="text-xl font-bold text-brand-dark-red dark:text-sin-yellow"
                       whileHover={{ scale: 1.05 }}
                     >
@@ -568,7 +570,7 @@ export default function AboutPage() {
                     <p className="text-sin-orange font-semibold mb-3 text-base">
                       {member.title}
                     </p>
-                    <motion.p 
+                    <motion.p
                       className="text-gray-600 dark:text-gray-300 text-sm px-4"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -583,6 +585,8 @@ export default function AboutPage() {
           </StaggeredContainer>
         </div>
       </section>
+      </>
+)}
     </div>
   )
 }

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import RainbowDivider from '@/components/RainbowDivider'
 import { MapPin, Calendar, Users, BookOpen, ArrowRight, Clock, Tag, ExternalLink, Phone, Mail, MapPin as MapPinIcon } from 'lucide-react'
 
@@ -82,6 +83,8 @@ export default function LocalPageClient({ localEvents, resources }: LocalPageCli
         return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
       case 'mutual-aid':
         return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
+      case 'educational':
+        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
       default:
         return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200'
     }
@@ -156,16 +159,25 @@ export default function LocalPageClient({ localEvents, resources }: LocalPageCli
                 {localEvents.length > 0 ? (
                   localEvents.map((event) => {
                     const { date, time } = formatDateTime(event.start, event.end)
+                    const url = (event as any)?.image?.asset?.url ?? (event as any)?.image
+                    const isSanity = typeof url === 'string' && (url as string).startsWith('https://cdn.sanity.io')
                     return (
                       <div key={event.id} className="card-glass group hover:scale-105 transition-transform duration-300">
                         {/* Event Image */}
                         {event.image && (
-                          <div className="aspect-video bg-muted rounded-lg mb-4 overflow-hidden">
-                            <img
-                              src={event.image.asset?.url || event.image}
-                              alt={event.title}
-                              className="w-full h-full object-cover"
-                            />
+                          <div className="aspect-video bg-muted rounded-lg mb-4 overflow-hidden relative">
+                            {isSanity ? (
+                              <Image
+                                src={url as string}
+                                alt={event.title}
+                                fill
+                                className="object-cover"
+                                sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                              />
+                            ) : (
+                              // eslint-disable-next-line @next/next/no-img-element -- external host not in allowlist; keeping raw img until allowlist is expanded
+                              <img src={url as string} alt={event.title} className="w-full h-full object-cover" />
+                            )}
                           </div>
                         )}
 

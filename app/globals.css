@@ -122,6 +122,81 @@
       -webkit-overflow-scrolling: touch;
     }
   }
+  /* Sunstone Youth Theme: scoped tokens (light) */
+  .sunstone-theme {
+    /* Neutrals */
+    --sy-background: 250 252 253;        /* #FAFCFD */
+    --sy-surface: 255 255 255;           /* #FFFFFF */
+    --sy-surface-subtle: 244 247 249;    /* #F4F7F9 */
+    --sy-border: 215 224 232;            /* #D7E0E8 */
+
+    /* Text */
+    --sy-text: 11 15 18;                 /* #0B0F12 */
+    --sy-text-secondary: 43 49 55;       /* #2B3137 */
+    --sy-text-muted: 91 107 116;         /* #5B6B74 */
+
+    /* Primary (Blue Munsell family) */
+    --sy-primary: 15 120 137;            /* #0F7889 (AA on white for text/links) */
+    --sy-primary-bg: 14 107 122;         /* #0E6B7A (contained button bg, white text) */
+    --sy-primary-hover: 17 127 144;      /* #117F90 */
+    --sy-primary-contrast: 255 255 255;  /* #FFFFFF */
+    --sy-primary-soft: 216 246 250;      /* #D8F6FA (chips/badges bg) */
+
+    /* Secondary (Jasper family) */
+    --sy-secondary: 143 58 42;           /* #8F3A2A (AA/AAA for text accents) */
+    --sy-secondary-bg: 143 58 42;        /* #8F3A2A (contained button bg) */
+    --sy-secondary-contrast: 255 255 255;/* #FFFFFF */
+
+    /* States */
+    --sy-visited: 111 48 87;             /* #6F3057 (Mulberry 700) */
+    --sy-warning-bg: 255 226 122;        /* #FFE27A */
+    --sy-warning-fg: 11 15 18;           /* #0B0F12 */
+
+    /* Focus/selection */
+    --sy-focus: 14 107 122;              /* #0E6B7A */
+    --sy-selection: 177 236 243;         /* #B1ECF3 */
+  }
+
+  /* Sunstone Youth Theme: scoped tokens (dark) */
+  .dark .sunstone-theme {
+    /* Neutrals */
+    --sy-background: 11 17 20;           /* #0B1114 */
+    --sy-surface: 14 21 25;              /* #0E1519 */
+    --sy-surface-subtle: 18 26 31;       /* #121A1F */
+    --sy-border: 31 42 49;               /* #1F2A31 */
+
+    /* Text */
+    --sy-text: 241 247 250;              /* #F1F7FA */
+    --sy-text-secondary: 201 211 218;    /* #C9D3DA */
+    --sy-text-muted: 154 169 180;        /* #9AA9B4 */
+
+    /* Primary (Blue Munsell family) */
+    --sy-primary: 77 198 212;            /* #4DC6D4 (AA/AAA on dark for links) */
+    --sy-primary-bg: 14 107 122;         /* #0E6B7A (contained button bg) */
+    --sy-primary-hover: 31 166 184;      /* #1FA6B8 */
+    --sy-primary-contrast: 255 255 255;  /* #FFFFFF */
+    --sy-primary-soft: 15 42 49;         /* #0F2A31 (chips/badges bg) */
+
+    /* Secondary (Jasper family) */
+    --sy-secondary: 229 143 126;         /* #E58F7E (AA/AAA on dark for accents) */
+    --sy-secondary-bg: 143 58 42;        /* #8F3A2A */
+    --sy-secondary-contrast: 255 255 255;/* #FFFFFF */
+
+    /* States */
+    --sy-visited: 225 168 204;           /* #E1A8CC */
+    --sy-warning-bg: 240 197 58;         /* #F0C53A */
+    --sy-warning-fg: 11 15 18;           /* #0B0F12 */
+
+    /* Focus/selection */
+    --sy-focus: 77 198 212;              /* #4DC6D4 */
+    --sy-selection: 8 59 69;             /* #083B45 */
+  }
+
+  /* Selection colors scoped to Sunstone */
+  .sunstone-theme ::selection {
+    background-color: rgb(var(--sy-selection));
+    color: rgb(var(--sy-text));
+  }
 }
 
 @layer components {
@@ -140,6 +215,81 @@
     inset: 0;
     pointer-events: none;
     background: linear-gradient(to right, rgba(255,255,255,0.06), rgba(255,255,255,0), rgba(0,0,0,0.04));
+  /* Sunstone Youth utilities (scoped to .sunstone-theme) */
+  .sunstone-theme .sy-link {
+    @apply underline underline-offset-2 font-medium
+           text-sy-primary hover:text-sy-primary-hover visited:text-sy-visited;
+  }
+
+  .sunstone-theme .sy-btn-primary {
+    @apply inline-flex items-center justify-center rounded-lg px-5 py-3 font-semibold
+           bg-sy-primary-bg text-white shadow-sm
+           hover:bg-sy-primary-hover
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sy-focus focus-visible:ring-offset-2 ring-offset-sy-surface
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .sunstone-theme .sy-btn-primary-outline {
+    @apply inline-flex items-center justify-center rounded-lg px-5 py-3 font-semibold
+           border-2 border-sy-primary text-sy-primary bg-transparent
+           hover:bg-sy-primary-bg hover:text-white
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sy-focus focus-visible:ring-offset-2 ring-offset-sy-surface
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .sunstone-theme .sy-btn-secondary {
+    @apply inline-flex items-center justify-center rounded-lg px-5 py-3 font-semibold
+           bg-sy-secondary-bg text-white shadow-sm
+           hover:opacity-95
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sy-focus focus-visible:ring-offset-2 ring-offset-sy-surface
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .sunstone-theme .sy-btn-secondary-outline {
+    @apply inline-flex items-center justify-center rounded-lg px-5 py-3 font-semibold
+           border-2 border-sy-secondary text-sy-secondary bg-transparent
+           hover:bg-sy-secondary-bg hover:text-white
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sy-focus focus-visible:ring-offset-2 ring-offset-sy-surface
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .sunstone-theme .sy-card {
+    @apply bg-sy-surface text-sy-text border border-sy-border rounded-xl shadow-sm;
+  }
+
+  .sunstone-theme .sy-panel-subtle {
+    @apply bg-sy-surface-subtle text-sy-text border border-sy-border/50 rounded-xl;
+  }
+
+  .sunstone-theme .sy-badge {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-sm font-medium
+           bg-sy-primary-soft text-sy-primary;
+  }
+
+  .sunstone-theme .sy-badge-warning {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold
+           bg-sy-warning-bg text-sy-warning-fg;
+  }
+
+  .sunstone-theme .sy-focusable {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sy-focus focus-visible:ring-offset-2 ring-offset-sy-surface;
+  }
+
+  .sunstone-theme .sy-text-muted {
+    @apply text-sy-text-muted;
+  }
+
+  .sunstone-theme .sy-text-secondary {
+    @apply text-sy-text-secondary;
+  }
+
+  .sunstone-theme .sy-bg {
+    @apply bg-sy-background;
+  }
+
+  .sunstone-theme .sy-surface {
+    @apply bg-sy-surface;
+  }
     mix-blend-mode: soft-light;
   }
   .btn-primary {

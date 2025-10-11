@@ -4,6 +4,7 @@ import InteractiveEventsTimeline from '@/components/InteractiveEventsTimeline'
 import Sponsors from '@/components/Sponsors'
 import OrbField from '@/components/OrbField'
 import { ExternalLink } from '@/components/ExternalLink'
+import Image from 'next/image'
 import { MessageCircle } from 'lucide-react'
 import { client } from '@/lib/sanity.client'
 import { upcomingEventsQuery } from '@/lib/queries'
@@ -95,9 +96,11 @@ export default async function Home() {
               showIcon={false}
               ariaLabel="Join our Discord (opens in new tab)"
             >
-              <img
+              <Image
                 src="/assets/images/icons/discord-pride-icon.png"
                 alt="Join Discord"
+                width={64}
+                height={64}
                 className="w-16 h-16 sm:w-20 sm:h-20 select-none"
               />
               <span className="hidden sm:inline-flex items-center gap-1">

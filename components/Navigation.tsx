@@ -196,7 +196,7 @@ export default function Navigation() {
     return () => {
       window.removeEventListener('popstate', handleRouteChange)
     }
-  }, [])
+  }, [closePeekStrip])
 
   // Close PeekStrip on scroll (desktop only to avoid mobile tap causing immediate close)
   useEffect(() => {

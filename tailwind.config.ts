@@ -24,6 +24,38 @@ const config: Config = {
         muted: 'rgb(var(--muted) / <alpha-value>)',
         'muted-foreground': 'rgb(var(--muted-foreground) / <alpha-value>)',
         border: 'rgb(var(--border) / <alpha-value>)',
+
+        // Sunstone Youth scoped tokens (use with .sunstone-theme wrapper)
+        sy: {
+          // Neutrals and surfaces
+          background: 'rgb(var(--sy-background) / <alpha-value>)',
+          surface: 'rgb(var(--sy-surface) / <alpha-value>)',
+          'surface-subtle': 'rgb(var(--sy-surface-subtle) / <alpha-value>)',
+          border: 'rgb(var(--sy-border) / <alpha-value>)',
+
+          // Text
+          text: 'rgb(var(--sy-text) / <alpha-value>)',
+          'text-secondary': 'rgb(var(--sy-text-secondary) / <alpha-value>)',
+          'text-muted': 'rgb(var(--sy-text-muted) / <alpha-value>)',
+
+          // Primary brand
+          primary: 'rgb(var(--sy-primary) / <alpha-value>)',
+          'primary-bg': 'rgb(var(--sy-primary-bg) / <alpha-value>)',
+          'primary-hover': 'rgb(var(--sy-primary-hover) / <alpha-value>)',
+          'primary-contrast': 'rgb(var(--sy-primary-contrast) / <alpha-value>)',
+          'primary-soft': 'rgb(var(--sy-primary-soft) / <alpha-value>)',
+
+          // Secondary brand
+          secondary: 'rgb(var(--sy-secondary) / <alpha-value>)',
+          'secondary-bg': 'rgb(var(--sy-secondary-bg) / <alpha-value>)',
+          'secondary-contrast': 'rgb(var(--sy-secondary-contrast) / <alpha-value>)',
+
+          // States
+          visited: 'rgb(var(--sy-visited) / <alpha-value>)',
+          'warning-bg': 'rgb(var(--sy-warning-bg) / <alpha-value>)',
+          'warning-fg': 'rgb(var(--sy-warning-fg) / <alpha-value>)',
+          focus: 'rgb(var(--sy-focus) / <alpha-value>)',
+        },
       },
       backgroundImage: {
         // Use perceptual OKLab interpolation to avoid hard banding between stops

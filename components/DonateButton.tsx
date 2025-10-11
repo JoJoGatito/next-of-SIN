@@ -14,6 +14,8 @@ export default function DonateButton() {
 
   useEffect(() => {
     let isMounted = true
+    // Capture current element for cleanup; avoids reading a changed ref in cleanup
+    const el = buttonRef.current
 
     const ensureScript = () =>
       new Promise<void>((resolve, reject) => {
@@ -82,8 +84,8 @@ export default function DonateButton() {
 
     return () => {
       isMounted = false
-      if (buttonRef.current) {
-        buttonRef.current.innerHTML = ''
+      if (el) {
+        el.innerHTML = ''
       }
     }
   }, [])
