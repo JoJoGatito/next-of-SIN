@@ -27,46 +27,49 @@ export default async function EventsPage() {
   } catch (err) {
     console.error('[EventsPage] Sanity fetch failed', err)
   }
-  console.log('[EventsPage] fetched events count', events?.length ?? 0)
+  console.log('[EventsPage] fetched events', {
+    count: events?.length ?? 0,
+    sample: events.slice(0, 3).map((e) => ({
+      id: e._id,
+      title: e.title,
+      start: e.start,
+      end: e.end,
+    })),
+  })
 
   const validEvents = (events || []).filter((e): e is SanityEvent & { start: string } => {
     return typeof e.start === 'string' && e.start.length > 0
   })
 
-  // America/Denver day-based filter:
-  // Keep events whose end date (if present) or start date is today or later in America/Denver.
-  const fmt = new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'America/Denver',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  })
-  const todayYMD = fmt.format(new Date())
-
-  const toYMDInTZ = (iso?: string) => {
-    if (!iso) return null
-    const d = new Date(iso)
-    return fmt.format(d)
-  }
-
+  // Filter to only upcoming events (based on start/end Date, not just day)
+  // If an event has an end, we use that as the last relevant moment; otherwise its start.
+  const now = new Date()
   const upcomingEvents = validEvents.filter((e) => {
-    const lastYMD = toYMDInTZ(e.end ?? e.start)
-    return !!lastYMD && lastYMD >= todayYMD
+    const end = e.end ? new Date(e.end) : null
+    const last = end ?? new Date(e.start)
+    return last >= now
   })
 
-  console.log('[EventsPage] upcoming (America/Denver day-based)', {
+  // Sort upcoming events chronologically by start time
+  const sortedEvents = [...upcomingEvents].sort((a, b) => {
+    const aTime = new Date(a.start).getTime()
+    const bTime = new Date(b.start).getTime()
+    return aTime - bTime
+  })
+
+  console.log('[EventsPage] transformed events for /events', {
     total: events?.length ?? 0,
     valid: validEvents.length,
     upcoming: upcomingEvents.length,
-    todayYMD,
+    sorted: sortedEvents.length,
   })
 
-  const transformedEvents = upcomingEvents.map((e) => ({
-    id: e._id,
-    title: e.title ?? 'Untitled Event',
-    start: e.start,
-    end: e.end,
-    location: e.location,
+  const transformedEvents = sortedEvents.map((e) => ({
+     id: e._id,
+     title: e.title ?? 'Untitled Event',
+     start: e.start,
+     end: e.end,
+     location: e.location,
     description: e.description ?? '',
     capacity: e.capacity,
   }))
