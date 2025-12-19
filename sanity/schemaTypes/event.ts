@@ -37,18 +37,19 @@ export const event = defineType({
       title: 'Location',
       type: 'string',
     }),
-    defineField({
+     defineField({
       name: 'program',
       title: 'Program',
       type: 'string',
       options: {
         list: [
+          { title: 'General', value: 'general' },
           { title: 'Hue House', value: 'hue-house' },
           { title: 'Rock & Stone', value: 'rock-and-stone' },
           { title: 'Sunstone Youth Group', value: 'sunstone-youth-group' },
         ],
       },
-      description: 'Which program this event belongs to',
+      description: "Which program this event belongs to. Use 'General' for events hosted by SIN that are not tied to a specific program.",
     }),
     defineField({
       name: 'description',
