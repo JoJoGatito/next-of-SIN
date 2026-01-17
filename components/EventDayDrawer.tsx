@@ -5,6 +5,7 @@ import { X, MapPin, Clock, Users, ExternalLink, Calendar, Tag } from 'lucide-rea
 import { EventDTO } from './CalendarMonth'
 import { useFocusTrap } from './FocusManager'
 import { useAriaAnnounce } from './AriaLiveRegion'
+import { parseDateKeyToLocalDate } from '../lib/dateUtils'
 
 interface EventDayDrawerProps {
   isOpen: boolean
@@ -42,7 +43,7 @@ export default function EventDayDrawer({
   // Announce when drawer opens/closes
   useEffect(() => {
     if (isOpen) {
-      announce(`Opened events for ${new Date(dayKey).toLocaleDateString('en-US', {
+      announce(`Opened events for ${parseDateKeyToLocalDate(dayKey).toLocaleDateString('en-US', {
         weekday: 'long',
         month: 'long',
         day: 'numeric',
@@ -190,7 +191,7 @@ export default function EventDayDrawer({
                 id="drawer-title"
                 className="text-2xl font-bold text-foreground mb-2"
               >
-                Events for {new Date(dayKey).toLocaleDateString('en-US', {
+                Events for {parseDateKeyToLocalDate(dayKey).toLocaleDateString('en-US', {
                   weekday: 'long',
                   month: 'long',
                   day: 'numeric',

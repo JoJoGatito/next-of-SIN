@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Calendar, Clock, MapPin, Users } from 'lucide-react'
 import CalendarMonth, { EventDTO } from '../CalendarMonth'
 import EventDayDrawer from '../EventDayDrawer'
+import { dateKeyFromDateLocal, parseDateKeyToLocalDate } from '../../lib/dateUtils'
 
 interface Event extends EventDTO {
   // Extending EventDTO for additional compatibility with existing list view
@@ -129,7 +130,8 @@ export default function EventsClient({ events }: EventsClientProps) {
     if (!selectedDay) return []
     return events.filter(event => {
       if (!event.start) return false
-      const eventDate = new Date(event.start).toISOString().split('T')[0]
+      // Use local calendar day for comparison to match how dates are displayed
+      const eventDate = dateKeyFromDateLocal(new Date(event.start))
       return eventDate === selectedDay
     })
   }, [events, selectedDay])
@@ -139,7 +141,8 @@ export default function EventsClient({ events }: EventsClientProps) {
     const grouped: Record<string, EventDTO[]> = {}
     events.forEach(event => {
       if (!event.start) return
-      const eventDate = new Date(event.start).toISOString().split('T')[0]
+      // Group by local calendar day so events align with what users see
+      const eventDate = dateKeyFromDateLocal(new Date(event.start))
       if (!grouped[eventDate]) {
         grouped[eventDate] = []
       }
@@ -325,7 +328,7 @@ export default function EventsClient({ events }: EventsClientProps) {
                     <div className="flex items-center gap-2 pb-2 border-b border-border/50">
                       <Calendar className="w-5 h-5 text-sin-orange" />
                       <h3 className="text-lg font-bold text-foreground">
-                        Events for {new Date(selectedDay).toLocaleDateString('en-US', {
+                        Events for {parseDateKeyToLocalDate(selectedDay).toLocaleDateString('en-US', {
                           weekday: 'long',
                           month: 'long',
                           day: 'numeric'

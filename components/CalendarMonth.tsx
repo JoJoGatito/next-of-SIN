@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import EventPill from './EventPill'
+import { dateKeyFromDateLocal, parseDateKeyToLocalDate } from '../lib/dateUtils'
 
 export interface EventDTO {
   id: string
@@ -69,7 +70,7 @@ export default function CalendarMonth({
     const prevMonth = new Date(year, month, 0)
     for (let i = startOffset - 1; i >= 0; i--) {
       const dayDate = new Date(prevMonth.getFullYear(), prevMonth.getMonth(), prevMonth.getDate() - i)
-      const dayKey = dayDate.toISOString().split('T')[0]
+      const dayKey = dateKeyFromDateLocal(dayDate)
       days.push({
         date: dayDate,
         dayKey,
@@ -82,7 +83,7 @@ export default function CalendarMonth({
     // Add days of the current month
     for (let day = 1; day <= daysInMonth; day++) {
       const dayDate = new Date(year, month, day)
-      const dayKey = dayDate.toISOString().split('T')[0]
+      const dayKey = dateKeyFromDateLocal(dayDate)
       const today = new Date()
       const isToday = dayDate.toDateString() === today.toDateString()
 
@@ -99,7 +100,7 @@ export default function CalendarMonth({
     const remainingDays = totalDays - days.length
     for (let day = 1; day <= remainingDays; day++) {
       const nextMonth = new Date(year, month + 1, day)
-      const dayKey = nextMonth.toISOString().split('T')[0]
+      const dayKey = dateKeyFromDateLocal(nextMonth)
       days.push({
         date: nextMonth,
         dayKey,
@@ -306,7 +307,7 @@ export default function CalendarMonth({
                       const event = day.events[0]
                       const eventStart = event.start ? new Date(event.start) : null
                       const eventEnd = event.end ? new Date(event.end) : null
-                      const currentDay = new Date(day.dayKey)
+                      const currentDay = parseDateKeyToLocalDate(day.dayKey)
 
                       const isMultiDay = eventStart && eventEnd &&
                         (eventEnd.getTime() - eventStart.getTime()) > 24 * 60 * 60 * 1000
@@ -332,7 +333,7 @@ export default function CalendarMonth({
                     day.events.slice(0, 3).map((event) => {
                       const eventStart = event.start ? new Date(event.start) : null
                       const eventEnd = event.end ? new Date(event.end) : null
-                      const currentDay = new Date(day.dayKey)
+                      const currentDay = parseDateKeyToLocalDate(day.dayKey)
 
                       const isMultiDay = eventStart && eventEnd &&
                         (eventEnd.getTime() - eventStart.getTime()) > 24 * 60 * 60 * 1000
